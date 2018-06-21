@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package bristlecone;
+
+import "google/api/annotations.proto";
+
+
+// REQUEST PARAMETERS
+
+message UserParam {
+        // Either the 'id' is present or the 'cookie', but not both.
+        string id = 1; // for offline recommendation
+        string cookie = 2; // for online recommendation
+    }
+
+// REQUESTS
+
+message ListInteractionsRequest {
+
+
+    // Number of results to return
+    int32 limit = 1;
+
+    // Offset of results to return
+    int32 offset = 2;
+
+    // User ID to collect interaction data from
+    UserParam user = 3;
+}
+
+
+// RESPONSES
+
+// Single-user interaction data item about a single media item
+message InteractionItem {
+    // Type of interaction (e.g. 'PLAYS')
+    string action = 1;
+
+    // Time of user interaction (ISO 8601)
+    string activity_time = 2;
+
+    // Detailed type of interaction (e.g. 'started', 'paused', 'ended')
+    string activity_type = 3;
+
+    // Time offset from start of media item, if applicable (ISO 8601)
+    string completion = 4;
+
+    // Media item PID
+    string pid = 5;
+
+    // Media item URI
+    string uri = 6;
+}
+
+message ListInteractionsResponse {
+    repeated InteractionItem items = 1;
+}
+
+// SERVICE
+
+message Empty {}
+
+service BristleconeService {
+    // List interaction items, each containing single-user interaction data from UAS about a single media item
+    // 
+    // For a queried user ID and list of media item URIs, it returns a corresponding list of interaction items
+    rpc ListInteractions(ListInteractionsRequest) returns (ListInteractionsResponse) {}
+
+    // Health check
+    //
+    // The healthcheck endpoint is a NOOP to check services response
+   rpc HealthCheck(Empty) returns (Empty) {
+      option (google.api.http) = {get: "/health" };
+    }
+}
