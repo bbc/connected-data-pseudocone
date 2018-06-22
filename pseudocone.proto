@@ -1,37 +1,17 @@
 syntax = "proto3";
 
-package bristlecone;
-
-import "google/api/annotations.proto";
+package pseudocone;
 
 
 // REQUEST PARAMETERS
 
-message UserParam {
-        // Either the 'id' is present or the 'cookie', but not both.
-        string id = 1; // for offline recommendation
-        string cookie = 2; // for online recommendation
-    }
+message TestUserInteractionItem {
 
-// REQUESTS
+    UserParam user = 1;
+    repeated InteractionItem items = 2;
 
-message ListInteractionsRequest {
-
-
-    // Number of results to return
-    int32 limit = 1;
-
-    // Offset of results to return
-    int32 offset = 2;
-
-    // User ID to collect interaction data from
-    UserParam user = 3;
 }
 
-
-// RESPONSES
-
-// Single-user interaction data item about a single media item
 message InteractionItem {
     // Type of interaction (e.g. 'PLAYS')
     string action = 1;
@@ -52,24 +32,84 @@ message InteractionItem {
     string uri = 6;
 }
 
-message ListInteractionsResponse {
-    repeated InteractionItem items = 1;
+message UserParam {
+
+    // Either the 'id' is present or the 'cookie', but not both.
+    string id = 1; // for offline recommendation
+    string cookie = 2; // for online recommendation
 }
 
-// SERVICE
+
+// REQUESTS
+
+message ListTestUserInteractionsRequest {
+
+    // Number of results to return
+    int32 limit = 1;
+
+    // Offset of results to return
+    int32 offset = 2;
+
+    // List of user IDs to include in the analysis
+    repeated UserParam users = 3;
+
+    // Dataset to call data from
+    string dataset = 4;
+
+    // Only fetch user interaction items after this date-time
+    // Expected ISO 8601 format, e.g., '2018-04-30T14:05:26.318497'
+    string start_interaction_time = 5;
+
+}
+
+message ListInteractionsRequest {
+
+    // Number of results to return
+    int32 limit = 1;
+
+    // Offset of results to return
+    int32 offset = 2;
+
+    // User ID to collect interaction data from
+    UserParam user = 3;
+
+    // Name of dataset to request from in Pseudocone
+    string dataset = 4;
+
+    // Only fetch user interaction items older than this date-time
+    // Expected ISO 8601 format, e.g., '2018-04-30T14:05:26.318497'
+    string end_interaction_time = 5;
+
+}
+
+
+// RESPONSES
+
+message ListTestUserInteractionsResponse {
+
+    repeated TestUserInteractionItem items = 1;
+
+}
+
+message ListInteractionsResponse {
+
+    repeated InteractionItem items = 1;
+
+}
 
 message Empty {}
 
-service BristleconeService {
-    // List interaction items, each containing single-user interaction data from UAS about a single media item
-    // 
-    // For a queried user ID and list of media item URIs, it returns a corresponding list of interaction items
-    rpc ListInteractions(ListInteractionsRequest) returns (ListInteractionsResponse) {}
+
+// SERVICE
+
+service PseudoconeService {
+
+    // List groundtruth user items, each containing a user id and a list of uris that the user has consumed
+    rpc ListTestUserInteractions(ListTestUserInteractionsRequest) returns (ListTestUserInteractionsResponse) {}
+
+    // For a queried user ID, it returns a corresponding list of interaction items before a given date-time.
+    rpc ListInteractionItems(ListInteractionsRequest) returns (ListInteractionsResponse) {}
 
     // Health check
-    //
-    // The healthcheck endpoint is a NOOP to check services response
-   rpc HealthCheck(Empty) returns (Empty) {
-      option (google.api.http) = {get: "/health" };
-    }
+    rpc HealthCheck(Empty) returns (Empty) {}
 }

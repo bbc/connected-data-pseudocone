@@ -1,6 +1,6 @@
 import os
 
-DEFAULT_GRPC_PORT = "50055"
+DEFAULT_GRPC_PORT = "50057"
 DEFAULT_MAX_WORKERS = 10
 DEFAULT_UAS_HOST = "https://activity.api.bbc.co.uk"
 DEFAULT_LOG_LEVEL = "DEBUG"

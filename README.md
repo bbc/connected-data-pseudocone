@@ -17,7 +17,7 @@ pip3 install -r requirements.txt
 
 2. Run the service:
 ```
-UAS_API_KEY=$UAS_API_KEY python3 -m app.pseudocone
+python3 -m app.pseudocone
 ```
 
 ### With Docker
@@ -28,13 +28,13 @@ docker build -t pseudocone:latest .
 
 2. Run the image:
 ```
-docker run -p 50057:50057 --env UAS_API_KEY=$UAS_API_KEY pseudocone:latest
+docker run -p 50057:50057 --env pseudocone:latest
 ```
 
 ## Interact with Service Locally
 **Once the service is running**, to interact with the gRPC interface use the following process.
-0. Get your/a user cookie:
-    * Log into [bbc.co.uk](http://bbc.co.uk) and open up developer tools in your browser, find where to browse cookies and copy the value of your `ckns_atkn` cookie.
+0. Get your/a user id:
+
 1. Install [gRPCurl](https://github.com/fullstorydev/grpcurl):
     ```
     # ensure go path correctly set: export GOPATH="$HOME/go"
@@ -48,44 +48,54 @@ docker run -p 50057:50057 --env UAS_API_KEY=$UAS_API_KEY pseudocone:latest
     # This should return an empty response.
     grpcurl -protoset ./pseudocone.protoset -plaintext -d '{}' localhost:50057 pseudocone.PseudoconeService.HealthCheck
     ```
-3. ListContent
+3. ListGroundtruthUserItems
     ```
-    # replace <user-cookie> with your cookie wrapped in double quotes
-    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user":{"cookie":<user-cookie>}, "limit":3, "offset":1}' localhost:50057 pseudocone.PseudoconeService.ListInteractions
+    # replace <user-id> with your BBC Hid wrapped in double quotes
+    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":3, "offset":1, "dataset":"DB-001", "prediction_time": "2018-06-16T00:00:26.318497" }' localhost:50057 pseudocone.PseudoconeService.ListInteractionItems
     ```
+
+4. ListInteractionItems
+
+    # replace <user-id> with your BBC Hid wrapped in double quotes
+    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user":{"id":<user-id>}, "limit":3, "offset":1, "dataset":"DB-001", "most_recent":"2018-06-16T00:00:26.318497"}' localhost:50057 pseudocone.PseudoconeService.ListGroundtruthUserItems
+
 ## Tests
 Run tests using:
 ```
 pip3 install -r requirements_test.txt
 python3 -m pytest --cov-report term-missing --cov=app -vv --cov-branch tests
 ```
-## Making Changes to the `.proto` File
-The following steps must be carried out when making changes to the `.proto` file:
-#### 1. Regenerate service files `*_pb2.py` and `*_pb2_grpc.py`
-These are the files/stubs used when writing code that interacts with the service. Simply run this command and make sure to replace `<service>`:
-```bash
-python -m grpc_tools.protoc \
-  -I. \
-  -I$GOPATH/src \
-  -I$GOPATH/src/github.com/googleapis/googleapis \
-  --python_out=./app/services \
-  --grpc_python_out=./app/services \
-  <service>.proto
+## Compile magical protocol buffer service from rubus.proto
+
+Generate the service stub and message definitions in Python:
 
 ```
-Note: You may have to manually update the import statement in the `<service>_pb2_grpc.py` file from `import <service>_pb2` to `import app.services.<service>_pb2`.
+    python -m grpc_tools.protoc -I. -I$GOPATH/src  -I$GOPATH/src/github.com/googleapis/googleapis  --python_out=./app --grpc_python_out=./app pseudocone.proto
+```
+
+Don't forget to rename the import path in `app/pseudocone_pb2_grpc.py` from:
+
+```
+    import pseudocone_pb2 as pseudocone__pb2
+```
+
+To:
+
+```
+    import app.pseudocone_pb2 as rubus__pb2
+```
+
 #### 2. Regenerate `.protoset` File
 The `.protoset` file is needed to use `gRPCurl` and is generated using the `.proto` file.
 To generate:
 ```
-python -m grpc_tools.protoc \                                                                             ✔  4210  16:42:43
-    -I. \
+python -m grpc_tools.protoc -I. \
     -I$GOPATH/src \
     -I$GOPATH/src/github.com/googleapis/googleapis \
     --proto_path=. \
-    --descriptor_set_out=<service>.protoset \
+    --descriptor_set_out=pseudocone.protoset \
     --include_imports \
-    <service>.proto
+    pseudocone.proto
 ```
 
 ### Code style
