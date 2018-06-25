@@ -60,6 +60,9 @@ message ListTestUserInteractionsRequest {
     // Expected ISO 8601 format, e.g., '2018-04-30T14:05:26.318497'
     string start_interaction_time = 5;
 
+    // Length of test period in ISO duration format e.g. P0Y0M14DT0H0M0S
+    string test_period_duration = 6;
+
 }
 
 message ListInteractionsRequest {
@@ -79,6 +82,9 @@ message ListInteractionsRequest {
     // Only fetch user interaction items older than this date-time
     // Expected ISO 8601 format, e.g., '2018-04-30T14:05:26.318497'
     string end_interaction_time = 5;
+
+    // Length of test period in ISO duration format e.g. P0Y0M14DT0H0M0S
+    string train_period_duration = 6;
 
 }
 

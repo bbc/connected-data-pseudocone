@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='pseudocone.proto',
   package='pseudocone',
   syntax='proto3',
-  serialized_pb=_b('\n\x10pseudocone.proto\x12\npseudocone\"j\n\x17TestUserInteractionItem\x12#\n\x04user\x18\x01 \x01(\x0b\x32\x15.pseudocone.UserParam\x12*\n\x05items\x18\x02 \x03(\x0b\x32\x1b.pseudocone.InteractionItem\"}\n\x0fInteractionItem\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\x15\n\ractivity_time\x18\x02 \x01(\t\x12\x15\n\ractivity_type\x18\x03 \x01(\t\x12\x12\n\ncompletion\x18\x04 \x01(\t\x12\x0b\n\x03pid\x18\x05 \x01(\t\x12\x0b\n\x03uri\x18\x06 \x01(\t\"\'\n\tUserParam\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06\x63ookie\x18\x02 \x01(\t\"\x97\x01\n\x1fListTestUserInteractionsRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12$\n\x05users\x18\x03 \x03(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1e\n\x16start_interaction_time\x18\x05 \x01(\t\"\x8c\x01\n\x17ListInteractionsRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12#\n\x04user\x18\x03 \x01(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1c\n\x14\x65nd_interaction_time\x18\x05 \x01(\t\"V\n ListTestUserInteractionsResponse\x12\x32\n\x05items\x18\x01 \x03(\x0b\x32#.pseudocone.TestUserInteractionItem\"F\n\x18ListInteractionsResponse\x12*\n\x05items\x18\x01 \x03(\x0b\x32\x1b.pseudocone.InteractionItem\"\x07\n\x05\x45mpty2\xa8\x02\n\x11PseudoconeService\x12w\n\x18ListTestUserInteractions\x12+.pseudocone.ListTestUserInteractionsRequest\x1a,.pseudocone.ListTestUserInteractionsResponse\"\x00\x12\x63\n\x14ListInteractionItems\x12#.pseudocone.ListInteractionsRequest\x1a$.pseudocone.ListInteractionsResponse\"\x00\x12\x35\n\x0bHealthCheck\x12\x11.pseudocone.Empty\x1a\x11.pseudocone.Empty\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x10pseudocone.proto\x12\npseudocone\"j\n\x17TestUserInteractionItem\x12#\n\x04user\x18\x01 \x01(\x0b\x32\x15.pseudocone.UserParam\x12*\n\x05items\x18\x02 \x03(\x0b\x32\x1b.pseudocone.InteractionItem\"}\n\x0fInteractionItem\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\x15\n\ractivity_time\x18\x02 \x01(\t\x12\x15\n\ractivity_type\x18\x03 \x01(\t\x12\x12\n\ncompletion\x18\x04 \x01(\t\x12\x0b\n\x03pid\x18\x05 \x01(\t\x12\x0b\n\x03uri\x18\x06 \x01(\t\"\'\n\tUserParam\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06\x63ookie\x18\x02 \x01(\t\"\xb5\x01\n\x1fListTestUserInteractionsRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12$\n\x05users\x18\x03 \x03(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1e\n\x16start_interaction_time\x18\x05 \x01(\t\x12\x1c\n\x14test_period_duration\x18\x06 \x01(\t\"\xab\x01\n\x17ListInteractionsRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12#\n\x04user\x18\x03 \x01(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1c\n\x14\x65nd_interaction_time\x18\x05 \x01(\t\x12\x1d\n\x15train_period_duration\x18\x06 \x01(\t\"V\n ListTestUserInteractionsResponse\x12\x32\n\x05items\x18\x01 \x03(\x0b\x32#.pseudocone.TestUserInteractionItem\"F\n\x18ListInteractionsResponse\x12*\n\x05items\x18\x01 \x03(\x0b\x32\x1b.pseudocone.InteractionItem\"\x07\n\x05\x45mpty2\xa8\x02\n\x11PseudoconeService\x12w\n\x18ListTestUserInteractions\x12+.pseudocone.ListTestUserInteractionsRequest\x1a,.pseudocone.ListTestUserInteractionsResponse\"\x00\x12\x63\n\x14ListInteractionItems\x12#.pseudocone.ListInteractionsRequest\x1a$.pseudocone.ListInteractionsResponse\"\x00\x12\x35\n\x0bHealthCheck\x12\x11.pseudocone.Empty\x1a\x11.pseudocone.Empty\"\x00\x62\x06proto3')
 )
 
 
@@ -209,6 +209,13 @@ _LISTTESTUSERINTERACTIONSREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='test_period_duration', full_name='pseudocone.ListTestUserInteractionsRequest.test_period_duration', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -222,7 +229,7 @@ _LISTTESTUSERINTERACTIONSREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=309,
-  serialized_end=460,
+  serialized_end=490,
 )
 
 
@@ -268,6 +275,13 @@ _LISTINTERACTIONSREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='train_period_duration', full_name='pseudocone.ListInteractionsRequest.train_period_duration', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -280,8 +294,8 @@ _LISTINTERACTIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=463,
-  serialized_end=603,
+  serialized_start=493,
+  serialized_end=664,
 )
 
 
@@ -311,8 +325,8 @@ _LISTTESTUSERINTERACTIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=605,
-  serialized_end=691,
+  serialized_start=666,
+  serialized_end=752,
 )
 
 
@@ -342,8 +356,8 @@ _LISTINTERACTIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=693,
-  serialized_end=763,
+  serialized_start=754,
+  serialized_end=824,
 )
 
 
@@ -366,8 +380,8 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=765,
-  serialized_end=772,
+  serialized_start=826,
+  serialized_end=833,
 )
 
 _TESTUSERINTERACTIONITEM.fields_by_name['user'].message_type = _USERPARAM
@@ -450,8 +464,8 @@ _PSEUDOCONESERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=775,
-  serialized_end=1071,
+  serialized_start=836,
+  serialized_end=1132,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListTestUserInteractions',
