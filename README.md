@@ -2,10 +2,14 @@
 
 # Pseudocone Component
 
-Pseudocone Component copies the behaviour of [Bristlecone](https://github.com/bbc/connected-data-bristlecone) but instead of reading user actions from UAS it reads from an offline UAS dump. Implemented with gRPC on a default port `50057`.
+The function of the Pseudocone component is to fetch data that is used for offline scoring. It has two principle roles:
+ 1. to deliver a list of test users to Justicia (together with items they have consumed); and
+ 2. to deliver user history items to bramble to be used to generate recommendations (copies the behaviour of
+ [Bristlecone](https://github.com/bbc/connected-data-bristlecone))
+ instead of reading user actions from UAS it reads from an offline UAS dump. Implemented with gRPC on a default port
+ `50057`.
 
 ## Run Service Locally
-Before proceeding, set your UAS API key as an environmental variable: `UAS_API_KEY=<key>`. If you do not have a key, then you must request it either from within your team if your team already has a key, or from the UAS team if not.
 ### With Virtualenv
 
 1. Create a virtualenv, install dependencies:
@@ -16,8 +20,11 @@ pip3 install -r requirements.txt
 ```
 
 2. Run the service:
+
+* To do this you will have to set the $DATA_PATH variable, which is a path to an anonymised UAS data dump sample.
+THe sample can be found in the dropbox "data" directory: "DB_DATA/SCV/anonymised_uas_extract.json"
 ```
-python3 -m app.pseudocone
+DATA_PATH=$DATA_PATH python3 -m app.pseudocone
 ```
 
 ### With Docker
@@ -38,34 +45,35 @@ docker run -p 50057:50057 --env pseudocone:latest
 1. Install [gRPCurl](https://github.com/fullstorydev/grpcurl):
     ```
     # ensure go path correctly set: export GOPATH="$HOME/go"
-    export PATH="$GOPATH/bin:$PATH
+    export PATH="$GOPATH/bin:$PATH"
     go get github.com/fullstorydev/grpcurl/...
     go install github.com/fullstorydev/grpcurl/...
     ```
 2. HealthCheck:
 
+    This should return an empty response.
     ```
-    # This should return an empty response.
     grpcurl -protoset ./pseudocone.protoset -plaintext -d '{}' localhost:50057 pseudocone.PseudoconeService.HealthCheck
     ```
-3. ListGroundtruthUserItems
+3. ListTestDataUsers
+
     ```
-    # replace <user-id> with your BBC Hid wrapped in double quotes
-    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":3, "offset":1, "dataset":"DB-001", "prediction_time": "2018-06-16T00:00:26.318497" }' localhost:50057 pseudocone.PseudoconeService.ListInteractionItems
+    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}], "start_interaction_time": "2018-02-01T00:00:26.318497Z", "test_period_duration":"P0Y1M7DT0H0M0S"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsers
     ```
 
-4. ListInteractionItems
 
-    # replace <user-id> with your BBC Hid wrapped in double quotes
+4. [NOT IMPLEMENTED IN THIS CURRENT PR] ListInteractionItems
+
+    ```
     grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user":{"id":<user-id>}, "limit":3, "offset":1, "dataset":"DB-001", "most_recent":"2018-06-16T00:00:26.318497"}' localhost:50057 pseudocone.PseudoconeService.ListGroundtruthUserItems
-
+    ```
 ## Tests
 Run tests using:
 ```
 pip3 install -r requirements_test.txt
 python3 -m pytest --cov-report term-missing --cov=app -vv --cov-branch tests
 ```
-## Compile magical protocol buffer service from rubus.proto
+## Compile magical protocol buffer service from pseudocone.proto
 
 Generate the service stub and message definitions in Python:
 

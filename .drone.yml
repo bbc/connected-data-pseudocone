@@ -1,0 +1,14 @@
+pipeline:
+  build:
+    image: grpc/python:1.4-onbuild
+    commands:
+      - pip install -r requirements.txt
+      - pip install -r requirements_test.txt
+      - pytest --cov-report term-missing --cov=app -vv --cov-branch tests/
+      - pycodestyle app tests
+  slack:
+    image: plugins/slack
+    channel: notifications
+    secrets: [ slack_webhook ]
+    when:
+      status: [success, failure]

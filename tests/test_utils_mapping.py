@@ -1,9 +1,8 @@
 from unittest.mock import patch
 
 import pytest
-from google.protobuf.json_format import MessageToDict
 
-from app.utils.mapping import map_uas_actions_to_proto, action_context_to_iso8601_duration, pid2uri
+from app.utils.mapping import action_context_to_iso8601_duration, pid2uri
 
 minimal_mock_uas_action = {
     'action': None,
@@ -25,17 +24,6 @@ expected_minimal_response = {
         }
     ]
 }
-
-
-@patch('app.utils.mapping.action_context_to_iso8601_duration')
-@patch('app.utils.mapping.pid2uri')
-def test_map_uas_actions_to_proto(mock_action_context_to_iso8601_duration, mock_pid2uri):
-    mock_action_context_to_iso8601_duration.return_value = None
-    mock_pid2uri.return_value = None
-
-    mock_uas_actions = [minimal_mock_uas_action]
-    response = map_uas_actions_to_proto(mock_uas_actions)
-    assert MessageToDict(response, including_default_value_fields=True) == expected_minimal_response
 
 
 @pytest.mark.parametrize('mappings', [

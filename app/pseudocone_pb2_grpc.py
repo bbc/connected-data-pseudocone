@@ -15,13 +15,13 @@ class PseudoconeServiceStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.ListTestUserInteractions = channel.unary_unary(
-        '/pseudocone.PseudoconeService/ListTestUserInteractions',
-        request_serializer=pseudocone__pb2.ListTestUserInteractionsRequest.SerializeToString,
-        response_deserializer=pseudocone__pb2.ListTestUserInteractionsResponse.FromString,
+    self.ListTestDataUsers = channel.unary_unary(
+        '/pseudocone.PseudoconeService/ListTestDataUsers',
+        request_serializer=pseudocone__pb2.ListTestDataUsersRequest.SerializeToString,
+        response_deserializer=pseudocone__pb2.ListTestDataUsersResponse.FromString,
         )
-    self.ListInteractionItems = channel.unary_unary(
-        '/pseudocone.PseudoconeService/ListInteractionItems',
+    self.ListInteractions = channel.unary_unary(
+        '/pseudocone.PseudoconeService/ListInteractions',
         request_serializer=pseudocone__pb2.ListInteractionsRequest.SerializeToString,
         response_deserializer=pseudocone__pb2.ListInteractionsResponse.FromString,
         )
@@ -37,14 +37,14 @@ class PseudoconeServiceServicer(object):
 
   """
 
-  def ListTestUserInteractions(self, request, context):
+  def ListTestDataUsers(self, request, context):
     """List groundtruth user items, each containing a user id and a list of uris that the user has consumed
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def ListInteractionItems(self, request, context):
+  def ListInteractions(self, request, context):
     """For a queried user ID, it returns a corresponding list of interaction items before a given date-time.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -61,13 +61,13 @@ class PseudoconeServiceServicer(object):
 
 def add_PseudoconeServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'ListTestUserInteractions': grpc.unary_unary_rpc_method_handler(
-          servicer.ListTestUserInteractions,
-          request_deserializer=pseudocone__pb2.ListTestUserInteractionsRequest.FromString,
-          response_serializer=pseudocone__pb2.ListTestUserInteractionsResponse.SerializeToString,
+      'ListTestDataUsers': grpc.unary_unary_rpc_method_handler(
+          servicer.ListTestDataUsers,
+          request_deserializer=pseudocone__pb2.ListTestDataUsersRequest.FromString,
+          response_serializer=pseudocone__pb2.ListTestDataUsersResponse.SerializeToString,
       ),
-      'ListInteractionItems': grpc.unary_unary_rpc_method_handler(
-          servicer.ListInteractionItems,
+      'ListInteractions': grpc.unary_unary_rpc_method_handler(
+          servicer.ListInteractions,
           request_deserializer=pseudocone__pb2.ListInteractionsRequest.FromString,
           response_serializer=pseudocone__pb2.ListInteractionsResponse.SerializeToString,
       ),

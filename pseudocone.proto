@@ -5,10 +5,10 @@ package pseudocone;
 
 // REQUEST PARAMETERS
 
-message TestUserInteractionItem {
+message TestDataUser {
 
     UserParam user = 1;
-    repeated InteractionItem items = 2;
+    repeated InteractionItem interactions = 2;
 
 }
 
@@ -42,7 +42,7 @@ message UserParam {
 
 // REQUESTS
 
-message ListTestUserInteractionsRequest {
+message ListTestDataUsersRequest {
 
     // Number of results to return
     int32 limit = 1;
@@ -91,9 +91,9 @@ message ListInteractionsRequest {
 
 // RESPONSES
 
-message ListTestUserInteractionsResponse {
+message ListTestDataUsersResponse {
 
-    repeated TestUserInteractionItem items = 1;
+    repeated TestDataUser items = 1;
 
 }
 
@@ -110,11 +110,11 @@ message Empty {}
 
 service PseudoconeService {
 
-    // List groundtruth user items, each containing a user id and a list of uris that the user has consumed
-    rpc ListTestUserInteractions(ListTestUserInteractionsRequest) returns (ListTestUserInteractionsResponse) {}
+    // List of test user objects, each containing a user id and a list of interaction items associated with that user
+    rpc ListTestDataUsers(ListTestDataUsersRequest) returns (ListTestDataUsersResponse) {}
 
     // For a queried user ID, it returns a corresponding list of interaction items before a given date-time.
-    rpc ListInteractionItems(ListInteractionsRequest) returns (ListInteractionsResponse) {}
+    rpc ListInteractions(ListInteractionsRequest) returns (ListInteractionsResponse) {}
 
     // Health check
     rpc HealthCheck(Empty) returns (Empty) {}
