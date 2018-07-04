@@ -34,7 +34,7 @@ def convert_json_list_to_pseudocone_response(data):
 
         for item_id in unique_item_ids:
             user_item_interactions = get_data_matching_property(user_data, "resourceid", item_id)
-            interaction = extract_earliest_interaction(user_item_interactions)
+            interaction = extract_latest_interaction(user_item_interactions)
             user_items.append(convert_db_object_to_interaction_item(interaction))
 
         user = pseudocone_pb2.UserParam(id=user_id, cookie=None)
@@ -44,10 +44,25 @@ def convert_json_list_to_pseudocone_response(data):
     return pseudocone_pb2.ListTestDataUsersResponse(items=user_interaction_items)
 
 
-def extract_earliest_interaction(interactions):
+def convert_single_user_interactions_to_proto_response(data):
 
-    # Return the earliest interaction
-    interactions.sort(key=extract_time, reverse=False)
+    unique_item_ids = get_unique_vals_for_property(data, "resourceid")
+    user_items = []
+
+    for item_id in unique_item_ids:
+        user_item_interactions = get_data_matching_property(data, "resourceid", item_id)
+        interaction = extract_latest_interaction(user_item_interactions)
+        user_items.append(convert_db_object_to_interaction_item(interaction))
+
+    list_interactions_response = pseudocone_pb2.ListInteractionsResponse(interactions=user_items)
+
+    return list_interactions_response
+
+
+def extract_latest_interaction(interactions):
+
+    # Return the latest interaction
+    interactions.sort(key=extract_time, reverse=True)
     return interactions[0]
 
 

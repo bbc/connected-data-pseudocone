@@ -38,7 +38,7 @@ class PseudoconeServiceServicer(object):
   """
 
   def ListTestDataUsers(self, request, context):
-    """List groundtruth user items, each containing a user id and a list of uris that the user has consumed
+    """List of test user objects, each containing a user id and a list of interaction items associated with that user
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')

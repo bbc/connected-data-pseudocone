@@ -6,9 +6,10 @@ from concurrent import futures
 
 from app import pseudocone_pb2_grpc, pseudocone_pb2
 from app.services.database import database_client
-from app.settings import ONE_DAY_IN_SECONDS, MAX_WORKERS, GRPC_PORT
+from app.settings import ONE_DAY_IN_SECONDS, MAX_WORKERS, GRPC_PORT, DEFAULT_PERMISSABLE_RESOURCE_TYPES
 from app.utils.log import logger
-from app.utils.mapping import convert_json_list_to_pseudocone_response
+from app.utils.mapping import convert_json_list_to_pseudocone_response, \
+    convert_single_user_interactions_to_proto_response
 from app.utils.server_decorators import for_all_methods, log_event, catch_exceptions
 
 
@@ -18,24 +19,45 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
 
     def ListTestDataUsers(self, request, context):
 
+        if request.start_interaction_time == '' or request.test_period_duration == '':
+            raise TypeError("Calls to Pseudocone ListTestDataUsers() endpoint must include the start_interaction_time "
+                            "and test_period_duration parameters.")
+
+        if len(request.resource_type) == 0:
+            resource_types = DEFAULT_PERMISSABLE_RESOURCE_TYPES
+        else:
+            resource_types = request.resource_type
+
         client = database_client(table_name=request.dataset)
         user_data = client.filter_users_with_inclusion_list(request.users, request.limit)
-        filtered_data = client.filter_interactions_between_dates(request.start_interaction_time,
-                                                                 request.test_period_duration, db_table=user_data)
+        time_filtered_data = client.filter_interactions_between_dates(iso_start_date=request.start_interaction_time,
+                                                                      iso_duration=request.test_period_duration,
+                                                                      db_table=user_data)
 
-        pseudocone_response = convert_json_list_to_pseudocone_response(filtered_data)
+        filtered_resource_type = client.filter_resource_type(resource_types, db_table=time_filtered_data)
+        pseudocone_response = convert_json_list_to_pseudocone_response(filtered_resource_type)
         return pseudocone_response
 
-    # def ListInteractions(self, request, context):
-    #     """List user interactions according to the `pseudocone.proto` spec."""
-    #     if request.user.cookie == '' and request.user.id == '':
-    #         raise ValueError('User cookie or ID must be included in request.')
-    #     if request.user.cookie != '':
-    #         raise NotImplementedError('Pseudocone only accepts anonymised BBC hashed IDs.')
-    #     uas_actions = self.uas_client.get_activity_history('plays', request.user.cookie, limit=request.limit,
-    #                                                        offset=request.offset)
-    #     uas_actions_proto = map_uas_actions_to_proto(uas_actions)
-    #     return uas_actions_proto
+    def ListInteractions(self, request, context):
+        """List user interactions according to the `pseudocone.proto` spec."""
+
+        if request.user.id == '' or request.user == {}:
+            raise ValueError('User ID must be included in request.')
+
+        if len(request.resource_type) == 0:
+            resource_types = DEFAULT_PERMISSABLE_RESOURCE_TYPES
+        else:
+            resource_types = request.resource_type
+
+        client = database_client(table_name=request.dataset)
+        user_interactions = client.filter_users_with_inclusion_list([request.user], limit=1)
+        time_filtered_data = client.filter_interactions_between_dates(iso_end_date=request.end_interaction_time,
+                                                                      iso_duration=request.train_period_duration,
+                                                                      db_table=user_interactions)
+        filtered_resource_type = client.filter_resource_type(resource_types, db_table=time_filtered_data)
+        filtered_with_limit_data = client.limit_num_interactions(request.limit, filtered_resource_type)
+        list_interactions_response = convert_single_user_interactions_to_proto_response(filtered_with_limit_data)
+        return list_interactions_response
 
     def HealthCheck(self, request, context):
 

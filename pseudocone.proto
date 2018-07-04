@@ -5,6 +5,11 @@ package pseudocone;
 
 // REQUEST PARAMETERS
 
+enum ResourceType {
+    CLIP = 0;
+    EPISODE = 1;
+}
+
 message TestDataUser {
 
     UserParam user = 1;
@@ -63,6 +68,9 @@ message ListTestDataUsersRequest {
     // Length of test period in ISO duration format e.g. P0Y0M14DT0H0M0S
     string test_period_duration = 6;
 
+    // Resource type to be returned in response (e.g. 'clip', 'episode')
+    repeated ResourceType resource_type = 7;
+
 }
 
 message ListInteractionsRequest {
@@ -86,6 +94,9 @@ message ListInteractionsRequest {
     // Length of test period in ISO duration format e.g. P0Y0M14DT0H0M0S
     string train_period_duration = 6;
 
+    // Resource type to be returned in response (e.g. 'clip', 'episode')
+    repeated ResourceType resource_type = 7;
+
 }
 
 
@@ -99,7 +110,7 @@ message ListTestDataUsersResponse {
 
 message ListInteractionsResponse {
 
-    repeated InteractionItem items = 1;
+    repeated InteractionItem interactions = 1;
 
 }
 

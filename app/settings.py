@@ -1,4 +1,5 @@
 import os
+from app.pseudocone_pb2 import ResourceType
 
 DEFAULT_GRPC_PORT = "50057"
 DEFAULT_MAX_WORKERS = 10
@@ -7,6 +8,8 @@ DEFAULT_LOG_LEVEL = "DEBUG"
 DEFAULT_REQUEST_TIMEOUT = 5
 
 ONE_DAY_IN_SECONDS = 60*60*24
+DEFAULT_PERMISSABLE_RESOURCE_TYPES = [ResourceType.Value("EPISODE"), ResourceType.Value("CLIP")]
+
 LOG_LEVEL = os.getenv("LOG_LEVEL", DEFAULT_LOG_LEVEL)
 
 GRPC_PORT = int(os.getenv("GRPC_PORT", DEFAULT_GRPC_PORT))

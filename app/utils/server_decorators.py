@@ -17,6 +17,7 @@ def catch_exceptions(attempted_func):
 
         except (TypeError, Exception) as e:
             code = grpc.StatusCode.INTERNAL
+            logger.exception(e)
             err_str = str(f'[PSEUDOCONE:{e.__class__.__name__}] {e}')
             logger.info(err_str)
             context.abort(code, err_str)

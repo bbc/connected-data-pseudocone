@@ -60,13 +60,15 @@ docker run -p 50057:50057 --env pseudocone:latest
     ```
     grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}], "start_interaction_time": "2018-02-01T00:00:26.318497Z", "test_period_duration":"P0Y1M7DT0H0M0S"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsers
     ```
+    * Offset parameter not yet implemented so non-functional.
 
-
-4. [NOT IMPLEMENTED IN THIS CURRENT PR] ListInteractionItems
+4. ListInteractionItems
 
     ```
-    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user":{"id":<user-id>}, "limit":3, "offset":1, "dataset":"DB-001", "most_recent":"2018-06-16T00:00:26.318497"}' localhost:50057 pseudocone.PseudoconeService.ListGroundtruthUserItems
+    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user":{"id":"1155"}, "limit":3, "offset":1, "end_interaction_time": "2018-03-02T00:00:26.318497Z", "train_period_duration":"P0Y1M7DT0H0M0S"}' localhost:50057 pseudocone.PseudoconeService.ListInteractions
+
     ```
+     * Offset parameter not yet implemented so non-functional.
 ## Tests
 Run tests using:
 ```
