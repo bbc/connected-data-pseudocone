@@ -4,8 +4,10 @@ import json
 from datetime import datetime
 
 from app.pseudocone_pb2 import ResourceType
+from app.services import gcp_bucket
 from app.settings import DATA_PATH
 from app.utils.mapping import get_unique_vals_for_property
+
 
 
 class database_client:
@@ -16,11 +18,15 @@ class database_client:
 
     def load_data(self, table_name=None):
 
-        if table_name is None or len(table_name) is 0:
-            table_name = DATA_PATH
+        gcp_blob = gcp_bucket.read_table()
+        if gcp_blob:
+            return gcp_blob["tmp_uas"]
 
-        with open(table_name, "r") as f:
-            return json.load(f)["tmp_uas"]
+        # if table_name is None or len(table_name) is 0:
+        #    table_name = DATA_PATH
+
+        # with open(table_name, "r") as f:
+        #    return json.load(f)["tmp_uas"]
 
     def filter_users_with_inclusion_list(self, inclusion_list, limit, db_table=None):
 
