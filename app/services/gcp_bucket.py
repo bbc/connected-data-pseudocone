@@ -3,16 +3,15 @@ import os
 
 from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
-
+from app.settings import DATA_DUMP_FILE_NAME
 
 def read_table(file_name=None):
-    """ Store scoring results on GCP in the datalab-justicia bucket.
+    """ Read dataset from GCP bucket.
     A json file containing service account credentials is required,
     path to file needs to be added in the environment variable
         GOOGLE_APPLICATION_CREDENTIALS
     Args:
-        results_dict (dict): The results returned from metrics
-        file_name (str): Path to json file to be stored on gcp bucket.
+        file_name (str): name of file stored in GCP.
     Returns:
         (bool): True, if the file was written successfully
     """
@@ -20,7 +19,7 @@ def read_table(file_name=None):
         return None
 
     if file_name is None:
-        file_name = 'anonymised_uas_extract.json'
+        file_name = DATA_DUMP_FILE_NAME
 
     bucket = get_gcp_bucket()
 
@@ -43,9 +42,3 @@ def get_blob(bucket, file_name):
         return json_dict
     else:
         return None
-
-
-def delete_blob(bucket, file_name):
-    """ Deletes a blob from the bucket."""
-    if bucket.blob(file_name).exists():
-        bucket.blob(file_name).delete()
