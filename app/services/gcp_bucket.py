@@ -5,7 +5,9 @@ from gcloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 from app.settings import DATA_DUMP_FILE_NAME
 
+
 def read_table(file_name=None):
+
     """ Read dataset from GCP bucket.
     A json file containing service account credentials is required,
     path to file needs to be added in the environment variable
