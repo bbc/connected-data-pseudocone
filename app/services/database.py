@@ -6,7 +6,7 @@ from datetime import datetime
 from app.pseudocone_pb2 import ResourceType
 from app.services import gcp_bucket
 from app.settings import GOOGLE_APPLICATION_CREDENTIALS
-from app.settings import DATA_PATH
+from app.settings import DATA_DUMP_FILE_NAME
 from app.utils.mapping import get_unique_vals_for_property
 
 
@@ -23,7 +23,7 @@ class database_client:
             return gcp_blob["tmp_uas"]
         else:
             if table_name is None or len(table_name) is 0:
-                table_name = DATA_PATH
+                table_name = DATA_DUMP_FILE_NAME
 
         with open(table_name, "r") as f:
             return json.load(f)["tmp_uas"]

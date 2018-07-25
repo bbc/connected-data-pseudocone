@@ -21,10 +21,10 @@ pip3 install -r requirements.txt
 
 2. Run the service:
 
-* To do this you will have to set the $DATA_PATH variable, which is a path to an anonymised UAS data dump sample.
+* To do this you will have to set the $DATA_DUMP_FILE_NAME variable, which is a path to an anonymised UAS data dump sample.
 THe sample can be found in the dropbox "data" directory: "DB_DATA/SCV/anonymised_uas_extract.json"
 ```
-DATA_PATH=$DATA_PATH python3 -m app.pseudocone
+DATA_DUMP_FILE_NAME=$DATA_DUMP_FILE_NAME python3 -m app.pseudocone
 ```
 
 ### With Docker
