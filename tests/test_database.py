@@ -46,7 +46,8 @@ def test_filter_users_without_inclusion_list(db_data):
     assert len(response) == NUM_INTERACTIONS_USER1 + NUM_INTERACTIONS_USER2
 
     client = database_client()
-    response = client.filter_users_with_inclusion_list(inclusion_list=[], user_limit=limit, db_table=db_data.return_value)
+    response = client.filter_users_with_inclusion_list(inclusion_list=[], user_limit=limit,
+                                                       db_table=db_data.return_value)
     assert len(response) == NUM_INTERACTIONS_USER1 + NUM_INTERACTIONS_USER2
 
 
