@@ -124,12 +124,12 @@ class database_client:
 
     def log_num_returned_items(self, num_items, filter_name=None):
         if filter_name:
-            if len(num_items) > 0:
+            if num_items > 0:
                 logger.info(f"Call returned {num_items} items after filtering by {filter_name}.")
             else:
                 logger.warning(f"No items returned after filtering by {filter_name}.")
         else:
-            if len(num_items) > 0:
+            if num_items > 0:
                 logger.info(f"Original database call returned {num_items} items.")
             else:
                 logger.warning("Original database call returned zero items.")

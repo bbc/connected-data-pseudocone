@@ -2,11 +2,9 @@ import grpc
 import logging
 import socket
 
-from requests import HTTPError, ConnectionError, ConnectTimeout, RequestException
 from stackdriver_logging.tracing import end_span, start_span
 
 from app.settings import SERVICE_NAME
-from app.utils.log import logger
 
 logger = logging.getLogger(SERVICE_NAME)
 
@@ -39,11 +37,8 @@ def log_event(event):
 
         b3_values = getattr(request, 'b3_values', {})
         start_span(b3_values, SERVICE_NAME, event.__name__, socket.gethostname())
-        logger.debug(f'Request to Pseudocone:\n{request}')
         logger.info(f"gRPC - Call '{event.__name__}': {request}")
         event_response = event(self, request, context)
-        n_res = len(event_response.items) if hasattr(event_response, 'results') else 1
-        logger.debug(f'{n_res} results returned from UAS.')
         logger.info(f"gRPC - Return '{event.__name__}'")
         end_span()
         return event_response

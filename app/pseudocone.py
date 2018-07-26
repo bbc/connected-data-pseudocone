@@ -66,9 +66,9 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
             raise ValueError('Requests to Pseudocone ListInteractions() endpoint must include the "dataset"'
                              ' parameter.')
 
-        if request.iso_end_date == '':
-            raise ValueError('Requests to Pseudocone ListInteractions() endpoint must include the "iso_end_date"'
-                             ' parameter.')
+        if request.end_interaction_time == '':
+            raise ValueError('Requests to Pseudocone ListInteractions() endpoint must include the '
+                             '"end_interaction_time" parameter.')
 
         if len(request.resource_type) == 0:
             resource_types = DEFAULT_PERMISSABLE_RESOURCE_TYPES

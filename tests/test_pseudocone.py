@@ -193,7 +193,8 @@ def test_list_interactions(mock_db_data, pseudocone_server):
                                                      user=user,
                                                      resource_type=[pseudocone_pb2.ResourceType.Value("CLIP")],
                                                      end_interaction_time="2018-03-02T00:00:00.318497Z",
-                                                     train_period_duration="P0Y0M1DT0H0M0S")
+                                                     train_period_duration="P0Y0M1DT0H0M0S",
+                                                     dataset="dataset")
 
     response = pseudocone_server["stub"].ListInteractions(request=request)
 
