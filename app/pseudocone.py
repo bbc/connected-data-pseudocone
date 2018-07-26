@@ -26,8 +26,8 @@ logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
 logging.getLogger('b3').setLevel(logging.WARNING)
 
 
-@for_all_methods(log_event)
 @for_all_methods(catch_exceptions)
+@for_all_methods(log_event)
 class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
 
     def ListTestDataUsers(self, request, context):
