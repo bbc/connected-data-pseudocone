@@ -18,18 +18,18 @@ def test_filter_users_with_inclusion_list(db_data):
     inclusion_list = [UserParam(id="1"), UserParam(id="2")]
     limit = "2"
     client = database_client()
-    response = client.filter_users_with_inclusion_list(inclusion_list=inclusion_list, limit=limit)
+    response = client.filter_users_with_inclusion_list(inclusion_list=inclusion_list, user_limit=limit)
     assert len(response) == NUM_INTERACTIONS_USER1 + NUM_INTERACTIONS_USER2
 
     limit = "1"
     client = database_client()
-    response = client.filter_users_with_inclusion_list(inclusion_list=inclusion_list, limit=limit)
+    response = client.filter_users_with_inclusion_list(inclusion_list=inclusion_list, user_limit=limit)
     assert len(response) == NUM_INTERACTIONS_USER1
 
     limit = "2"
     inclusion_list = [UserParam(id="1")]
     client = database_client()
-    response = client.filter_users_with_inclusion_list(inclusion_list=inclusion_list, limit=limit)
+    response = client.filter_users_with_inclusion_list(inclusion_list=inclusion_list, user_limit=limit)
     assert len(response) == NUM_INTERACTIONS_USER1
     assert response[0]["anon_id"] == "1"
     assert response[1]["anon_id"] == "1"
@@ -42,11 +42,11 @@ def test_filter_users_without_inclusion_list(db_data):
 
     limit = "2"
     client = database_client()
-    response = client.filter_users_with_inclusion_list(inclusion_list=[], limit=limit)
+    response = client.filter_users_with_inclusion_list(inclusion_list=[], user_limit=limit)
     assert len(response) == NUM_INTERACTIONS_USER1 + NUM_INTERACTIONS_USER2
 
     client = database_client()
-    response = client.filter_users_with_inclusion_list(inclusion_list=[], limit=limit, db_table=db_data.return_value)
+    response = client.filter_users_with_inclusion_list(inclusion_list=[], user_limit=limit, db_table=db_data.return_value)
     assert len(response) == NUM_INTERACTIONS_USER1 + NUM_INTERACTIONS_USER2
 
 
@@ -55,7 +55,7 @@ def test_filter_users_without_inclusion_list_no_users_available(db_data):
 
     limit = "2"
     client = database_client()
-    response = client.filter_users_with_inclusion_list(inclusion_list=[UserParam(id="na")], limit=limit)
+    response = client.filter_users_with_inclusion_list(inclusion_list=[UserParam(id="na")], user_limit=limit)
     assert len(response) == 0
 
 

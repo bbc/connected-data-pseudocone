@@ -76,7 +76,7 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
             resource_types = request.resource_type
 
         client = database_client(table_name=request.dataset)
-        user_interactions = client.filter_users_with_inclusion_list([request.user], limit=1)
+        user_interactions = client.filter_users_with_inclusion_list([request.user], user_limit=1)
         time_filtered_data = client.filter_interactions_between_dates(iso_end_date=request.end_interaction_time,
                                                                       iso_duration=request.train_period_duration,
                                                                       db_table=user_interactions)

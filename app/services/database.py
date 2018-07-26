@@ -33,16 +33,16 @@ class database_client:
             self.log_num_returned_items(len(items))
             return json.load(f)["tmp_uas"]
 
-    def filter_users_with_inclusion_list(self, inclusion_list, limit, db_table=None):
+    def filter_users_with_inclusion_list(self, inclusion_list, user_limit, db_table=None):
 
         if db_table is None:
             db_table = self.table
 
         if len(inclusion_list) == 0:
             raw_inclusion_list = get_unique_vals_for_property(db_table, "anon_id")
-            raw_inclusion_list = raw_inclusion_list[:int(limit)]
+            raw_inclusion_list = raw_inclusion_list[:int(user_limit)]
         else:
-            inclusion_list = inclusion_list[:int(limit)]
+            inclusion_list = inclusion_list[:int(user_limit)]
             raw_inclusion_list = [user.id for user in inclusion_list]
 
         data_with_inclusion_filtered = [row for row in db_table[:] if row["anon_id"] in raw_inclusion_list]
@@ -107,7 +107,7 @@ class database_client:
 
     def limit_num_interactions(self, limit, db_table=None):
 
-        if db_table:
+        if db_table and limit > 0:
             return db_table[:limit]
         else:
             return db_table
