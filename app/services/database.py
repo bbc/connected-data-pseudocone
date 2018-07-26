@@ -1,13 +1,16 @@
 import isodate
 import json
+import logging
 
 from datetime import datetime
 
 from app.pseudocone_pb2 import ResourceType
 from app.services import gcp_bucket
 from app.settings import GOOGLE_APPLICATION_CREDENTIALS
-from app.settings import DATA_DUMP_FILE_NAME
+from app.settings import DATA_DUMP_FILE_NAME, SERVICE_NAME
 from app.utils.mapping import get_unique_vals_for_property
+
+logger = logging.getLogger(SERVICE_NAME)
 
 
 class database_client:
@@ -18,7 +21,7 @@ class database_client:
 
     def load_data(self, table_name=None):
 
-        gcp_blob = gcp_bucket.read_table()
+        gcp_blob = gcp_bucket.read_table(table_name)
         if gcp_blob:
             return gcp_blob["tmp_uas"]
         else:
@@ -26,6 +29,8 @@ class database_client:
                 table_name = DATA_DUMP_FILE_NAME
 
         with open(table_name, "r") as f:
+            items = json.load(f)["tmp_uas"]
+            self.log_num_returned_items(len(items))
             return json.load(f)["tmp_uas"]
 
     def filter_users_with_inclusion_list(self, inclusion_list, limit, db_table=None):
@@ -42,8 +47,7 @@ class database_client:
 
         data_with_inclusion_filtered = [row for row in db_table[:] if row["anon_id"] in raw_inclusion_list]
 
-        if len(data_with_inclusion_filtered) == 0:
-            print("No items returned as user/users specified are not available.")
+        self.log_num_returned_items(len(data_with_inclusion_filtered), "inclusion_list")
 
         return data_with_inclusion_filtered
 
@@ -69,24 +73,25 @@ class database_client:
                 end_date_parsed = start_date_parsed + isodate.parse_duration(iso_duration)
                 start_filtered = self.filter_with_start_date(db_table, start_date_parsed)
                 start_end_filtered = self.filter_with_end_date(start_filtered, end_date_parsed)
-                self.check_num_items(start_end_filtered)
+                self.log_num_returned_items(len(start_end_filtered), "start_date")
                 return start_end_filtered
             else:
                 end_date_parsed = datetime.strptime(iso_end_date, "%Y-%m-%dT%H:%M:%S.%fZ")
                 start_date_parsed = end_date_parsed - isodate.parse_duration(iso_duration)
                 start_filtered = self.filter_with_start_date(db_table, start_date_parsed)
                 start_end_filtered = self.filter_with_end_date(start_filtered, end_date_parsed)
-                self.check_num_items(start_end_filtered)
+                self.log_num_returned_items(len(start_end_filtered), "end_date")
                 return start_end_filtered
         else:
             if iso_start_date:
                 start_date_parsed = datetime.strptime(iso_start_date, "%Y-%m-%dT%H:%M:%S.%fZ")
                 db_table = self.filter_with_start_date(db_table, start_date_parsed)
+                self.log_num_returned_items(len(db_table), "start_date")
             if iso_end_date:
                 end_date_parsed = datetime.strptime(iso_end_date, "%Y-%m-%dT%H:%M:%S.%fZ")
                 db_table = self.filter_with_end_date(db_table, end_date_parsed)
+                self.log_num_returned_items(len(db_table), "end_date")
 
-            self.check_num_items(db_table)
             return db_table
 
     def filter_resource_type(self, permissable_resource_types, db_table=None):
@@ -117,6 +122,14 @@ class database_client:
                          datetime.strptime(row["activitytime"], "%Y-%m-%dT%H:%M:%S.%fZ") < end_date_parsed]
         return filtered_data
 
-    def check_num_items(self, db_table):
-        if len(db_table) == 0:
-            print("No items returned as none are available in dates specified.")
+    def log_num_returned_items(self, num_items, filter_name=None):
+        if filter_name:
+            if len(num_items) > 0:
+                logger.info(f"Call returned {num_items} items after filtering by {filter_name}.")
+            else:
+                logger.warning(f"No items returned after filtering by {filter_name}.")
+        else:
+            if len(num_items) > 0:
+                logger.info(f"Original database call returned {num_items} items.")
+            else:
+                logger.warning("Original database call returned zero items.")

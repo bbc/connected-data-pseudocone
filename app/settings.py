@@ -1,7 +1,7 @@
 import os
 from app.pseudocone_pb2 import ResourceType
 
-
+SERVICE_NAME = "Pseudocone"
 DEFAULT_UAS_HOST = "https://activity.api.bbc.co.uk"
 DEFAULT_LOG_LEVEL = "DEBUG"
 

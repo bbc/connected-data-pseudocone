@@ -71,6 +71,9 @@ message ListTestDataUsersRequest {
     // Resource type to be returned in response (e.g. 'clip', 'episode')
     repeated ResourceType resource_type = 7;
 
+    // Map containing values for 'X-B3-TraceId', 'X-B3-ParentSpanId', 'X-B3-SpanId', 'X-B3-Sampled', and 'X-B3-Flags'
+    map<string,string> b3_values = 8;
+
 }
 
 message ListInteractionsRequest {
@@ -96,6 +99,9 @@ message ListInteractionsRequest {
 
     // Resource type to be returned in response (e.g. 'clip', 'episode')
     repeated ResourceType resource_type = 7;
+
+    // Map containing values for 'X-B3-TraceId', 'X-B3-ParentSpanId', 'X-B3-SpanId', 'X-B3-Sampled', and 'X-B3-Flags'
+    map<string,string> b3_values = 8;
 
 }
 

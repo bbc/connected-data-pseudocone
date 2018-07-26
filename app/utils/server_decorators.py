@@ -1,7 +1,14 @@
 import grpc
-from requests import HTTPError, ConnectionError, ConnectTimeout, RequestException
+import logging
+import socket
 
+from requests import HTTPError, ConnectionError, ConnectTimeout, RequestException
+from stackdriver_logging.tracing import end_span, start_span
+
+from app.settings import SERVICE_NAME
 from app.utils.log import logger
+
+logger = logging.getLogger(SERVICE_NAME)
 
 
 def catch_exceptions(attempted_func):
@@ -19,19 +26,26 @@ def catch_exceptions(attempted_func):
             code = grpc.StatusCode.INTERNAL
             logger.exception(e)
             err_str = str(f'[PSEUDOCONE:{e.__class__.__name__}] {e}')
-            logger.info(err_str)
-            context.abort(code, err_str)
 
+        logger.error(err_str)
+        end_span()
+        context.abort(code, err_str)
     return raise_exception
 
 
 def log_event(event):
     """Log any requests and responses made to and from the gRPC server."""
     def wrapper(self, request, context):
+
+        b3_values = getattr(request, 'b3_values', {})
+        start_span(b3_values, SERVICE_NAME, event.__name__, socket.gethostname())
         logger.debug(f'Request to Pseudocone:\n{request}')
+        logger.info(f"gRPC - Call '{event.__name__}': {request}")
         event_response = event(self, request, context)
         n_res = len(event_response.items) if hasattr(event_response, 'results') else 1
         logger.debug(f'{n_res} results returned from UAS.')
+        logger.info(f"gRPC - Return '{event.__name__}'")
+        end_span()
         return event_response
 
     return wrapper

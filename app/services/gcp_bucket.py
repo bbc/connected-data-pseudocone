@@ -18,6 +18,7 @@ def read_table(file_name=None):
         (bool): True, if the file was written successfully
     """
     if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
+
         return None
 
     if file_name is None:
