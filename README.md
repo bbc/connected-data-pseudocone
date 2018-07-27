@@ -1,4 +1,4 @@
-![Drone CI Status](http://drone.connected-data.tools.bbc.co.uk/api/badges/bbc/connected-data-pseudocone/status.svg)
+![Drone CI Status](https://drone.datalab.rocks/api/badges/bbc/connected-data-pseudocone/status.svg)
 
 # Pseudocone Component
 
