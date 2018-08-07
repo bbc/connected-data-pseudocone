@@ -1,27 +1,48 @@
 import grpc
+import logging
 import socket
 import time
 
 from concurrent import futures
+from stackdriver_logging.jsonlog import configure_json_logging
 
 from app import pseudocone_pb2_grpc, pseudocone_pb2
 from app.services.database import database_client
-from app.settings import ONE_DAY_IN_SECONDS, MAX_WORKERS, GRPC_PORT, DEFAULT_PERMISSABLE_RESOURCE_TYPES
+from app.settings import ONE_DAY_IN_SECONDS, MAX_WORKERS, GRPC_PORT, DEFAULT_PERMISSABLE_RESOURCE_TYPES, SERVICE_NAME,\
+    LOG_LEVEL, DATA_DUMP_FILE_NAME
 from app.utils.log import logger
 from app.utils.mapping import convert_json_list_to_pseudocone_response, \
     convert_single_user_interactions_to_proto_response
 from app.utils.server_decorators import for_all_methods, log_event, catch_exceptions
 
+# logging
+configure_json_logging('bbc-connected-data')
+logger = logging.getLogger(SERVICE_NAME)
+logging.getLogger(SERVICE_NAME).setLevel(LOG_LEVEL)
 
-@for_all_methods(log_event)
+logging.getLogger('werkzeug').setLevel(logging.WARNING)
+logging.getLogger('google.auth.transport.requests').setLevel(logging.WARNING)
+logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
+logging.getLogger('b3').setLevel(logging.WARNING)
+
+
 @for_all_methods(catch_exceptions)
+@for_all_methods(log_event)
 class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
 
     def ListTestDataUsers(self, request, context):
 
-        if request.start_interaction_time == '' or request.test_period_duration == '':
-            raise TypeError("Calls to Pseudocone ListTestDataUsers() endpoint must include the start_interaction_time "
-                            "and test_period_duration parameters.")
+        if not request.test_period_duration:
+            err_message = "Requests to Pseudocone ListTestDataUsers() endpoint must include the " \
+                          "'test_period_duration' parameter."
+            logger.exception(err_message)
+            raise ValueError(err_message)
+
+        if not request.start_interaction_time:
+            err_message = "Requests to Pseudocone ListTestDataUsers() endpoint must include the " \
+                          "'start_interaction_time' parameter."
+            logger.exception(err_message)
+            raise ValueError(err_message)
 
         if len(request.resource_type) == 0:
             resource_types = DEFAULT_PERMISSABLE_RESOURCE_TYPES
@@ -41,16 +62,27 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
     def ListInteractions(self, request, context):
         """List user interactions according to the `pseudocone.proto` spec."""
 
-        if request.user.id == '' or request.user == {}:
-            raise ValueError('User ID must be included in request.')
+        if not request.user.id or not request.user:
+            err_message = 'Requests to Pseudocone ListInteractions() endpoint must include the "user" parameter.'
+            logger.exception(err_message)
+            raise ValueError(err_message)
+
+        if not request.end_interaction_time:
+            err_message = 'Requests to Pseudocone ListInteractions() endpoint must include the ' \
+                          '"end_interaction_time" parameter.'
+            logger.exception(err_message)
+            raise ValueError(err_message)
 
         if len(request.resource_type) == 0:
             resource_types = DEFAULT_PERMISSABLE_RESOURCE_TYPES
         else:
             resource_types = request.resource_type
 
+        if request.dataset == '':
+            request.dataset = DATA_DUMP_FILE_NAME
+
         client = database_client(table_name=request.dataset)
-        user_interactions = client.filter_users_with_inclusion_list([request.user], limit=1)
+        user_interactions = client.filter_users_with_inclusion_list([request.user], user_limit=1)
         time_filtered_data = client.filter_interactions_between_dates(iso_end_date=request.end_interaction_time,
                                                                       iso_duration=request.train_period_duration,
                                                                       db_table=user_interactions)

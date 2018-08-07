@@ -6,7 +6,10 @@ The function of the Pseudocone component is to fetch data that is used for offli
  1. to deliver a list of test users to Justicia (together with items they have consumed); and
  2. to deliver user history items to bramble to be used to generate recommendations (copies the behaviour of
  [Bristlecone](https://github.com/bbc/connected-data-bristlecone))
- instead of reading user actions from UAS it reads from an offline UAS dump. Implemented with gRPC on a default port
+ instead of reading user actions from UAS it reads from an offline UAS dump JSON file (named
+ "anonymised_uas_extract.json") which is located in a GCP bucket named "pseudocone_data_dump".
+
+ Implemented with gRPC on a default port
  `50057`.
 
 ## Run Service Locally
@@ -21,10 +24,10 @@ pip3 install -r requirements.txt
 
 2. Run the service:
 
-* To do this you will have to set the $DATA_PATH variable, which is a path to an anonymised UAS data dump sample.
-THe sample can be found in the dropbox "data" directory: "DB_DATA/SCV/anonymised_uas_extract.json"
+* To run locally, you will have to set the $GOOGLE_APPLICATION_CREDENTIALS variable, which is a local path to a json
+ file.
 ```
-DATA_PATH=$DATA_PATH python3 -m app.pseudocone
+GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS python3 -m app.pseudocone
 ```
 
 ### With Docker
@@ -58,15 +61,14 @@ docker run -p 50057:50057 --env pseudocone:latest
 3. ListTestDataUsers
 
     ```
-    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}], "start_interaction_time": "2018-02-01T00:00:26.318497Z", "test_period_duration":"P0Y1M7DT0H0M0S"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsers
+    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}], "start_interaction_time": "2018-02-01T00:00:26.318497Z", "test_period_duration":"P0Y1M7DT0H0M0S", "dataset":"anonymised_uas_extract.json"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsers
     ```
     * Offset parameter not yet implemented so non-functional.
 
 4. ListInteractionItems
 
     ```
-    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user":{"id":"1155"}, "limit":3, "offset":1, "end_interaction_time": "2018-03-02T00:00:26.318497Z", "train_period_duration":"P0Y1M7DT0H0M0S"}' localhost:50057 pseudocone.PseudoconeService.ListInteractions
-
+grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user": {"id": "44378"}, "dataset":"anonymised_uas_extract.json", "end_interaction_time":"2018-05-15T14:13:33.5Z"}' localhost:50057 pseudocone.PseudoconeService.ListInteractions
     ```
      * Offset parameter not yet implemented so non-functional.
 ## Tests

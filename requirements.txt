@@ -5,3 +5,4 @@ grpcio==1.10.0
 grpcio-tools==1.10.0
 requests==2.18.4
 isodate==0.6.0
+git+https://github.com/bbc/stackdriver_logging@v0.1.2

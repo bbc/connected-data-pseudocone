@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  LOG_LEVEL: "INFO"
+  DATA_DUMP_FILE_NAME: "anonymised_uas_extract.json"
+  GOOGLE_APPLICATION_CREDENTIALS: "/var/secrets/google/key.json"
+kind: ConfigMap
+metadata:
+  name: pseudocone-stage-config
+  labels:
+    service: pseudocone
+    env: stage
