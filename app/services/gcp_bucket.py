@@ -20,6 +20,7 @@ def read_table(file_name=None):
     Returns:
         (bool): True, if the file was written successfully
     """
+
     if not GOOGLE_APPLICATION_CREDENTIALS:
         logger.warning("'GOOGLE_APPLICATION_CREDENTIALS' is not set. To read from GCP storage, this environement"
                        "variable needs to be specified. Will now try to read the file locally instead.")
@@ -37,6 +38,7 @@ def read_table(file_name=None):
 
 def get_gcp_bucket():
     try:
+
         credentials_dict = json.load(open(GOOGLE_APPLICATION_CREDENTIALS, 'r'))
         credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict)
         client = storage.Client(credentials=credentials, project='bbc-connected-data')
@@ -51,7 +53,7 @@ def get_gcp_bucket():
 def get_blob(bucket, file_name):
     """ Read data as json (and convert to dict)."""
     if bucket.blob(file_name).exists():
-        json_dict = json.loads(bucket.blob(file_name).download_as_string())
+        json_dict = json.loads(bucket.blob(file_name, chunk_size=262144).download_as_string())
         return json_dict
     else:
         logger.warning(f"File '{file_name}' does not exist in GCP bucket. Will now try to read the file locally"

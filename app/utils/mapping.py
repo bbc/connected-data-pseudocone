@@ -51,7 +51,7 @@ def convert_single_user_interactions_to_proto_response(data):
 
     for item_id in unique_item_ids:
         user_item_interactions = get_data_matching_property(data, "resourceid", item_id)
-        interaction = extract_latest_interaction(user_item_interactions)
+        interaction = extract_latest_interaction(user_item_interactions)  # would not be necessary with the new dump
         user_items.append(convert_db_object_to_interaction_item(interaction))
 
     list_interactions_response = pseudocone_pb2.ListInteractionsResponse(interactions=user_items)

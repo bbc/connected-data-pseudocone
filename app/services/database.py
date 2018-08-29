@@ -23,27 +23,25 @@ class database_client:
 
         gcp_data = gcp_bucket.read_table(table_name)
         if gcp_data:
-            return gcp_data.get("tmp_uas")
+            return gcp_data
         else:
             try:
                 if not table_name:
                     table_name = DATA_DUMP_FILE_NAME
 
                 with open(table_name, "r") as f:
-                    items = json.load(f).get("tmp_uas")
+                    items = json.load(f)
                     logger.info(f"Call returned {len(items)} items after reading local file.")
-                    return json.load(f)["tmp_uas"]
+                    return items
             except FileNotFoundError:
                 err_message = f"Could not read from local file {table_name}."
                 logger.exception(err_message)
                 raise FileNotFoundError(err_message)
-            except KeyError:
-                err_message = f"Value 'tmp_uas' not found in table."
-                logger.exception(err_message)
-                raise KeyError
+            except ValueError as e:
+                logger.exception(e)
+                raise ValueError
 
     def filter_users_with_inclusion_list(self, inclusion_list, user_limit, db_table=None):
-
         if db_table is None:
             db_table = self.table
 

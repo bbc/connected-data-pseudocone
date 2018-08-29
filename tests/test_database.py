@@ -1,11 +1,13 @@
+import os
 from unittest.mock import MagicMock, patch
+
 import pytest
 
 from app.pseudocone_pb2 import UserParam, ResourceType
 from app.services.database import database_client
+from app.settings import DATA_DUMP_FILE_NAME
 from tests.fixtures.database import MULTI_USER_MULTI_ITEM_MULTI_INTERACTION, \
                                     SINGLE_USER_MULTI_ITEM_SINGLE_INTERACTION, \
-                                    MOCK_JSON_LOAD, \
                                     SINGLE_USER_ONE_EPISODE_ONE_CLIP
 
 NUM_INTERACTIONS_USER1 = len([x for x in MULTI_USER_MULTI_ITEM_MULTI_INTERACTION if x["anon_id"] == "1"])
@@ -138,23 +140,25 @@ def test_filter_interactions_between_dates_incorrect_params(db_data):
                                                                  iso_duration=duration)
 
 
-@patch("app.services.database.json.load", return_value=MOCK_JSON_LOAD)
-@patch("app.services.database.open", create=True)
-def test_load_data(mock_json, mock_file):
-
-    client = database_client()
-    assert len(client.table) is 1
-
-    client = database_client(table_name="DB1")
-    assert len(client.table) is 1
+@pytest.mark.integration
+def test_load_data_from_gcp_file():
+    client = database_client(table_name=DATA_DUMP_FILE_NAME)
+    assert len(client.table) == 1000
 
 
-@patch("app.services.database.json.load", return_value=MOCK_JSON_LOAD)
-@patch("app.services.database.open", create=True)
-def test_limit_num_interactions(mock_json, mock_file):
-        client = database_client()
-        data = SINGLE_USER_MULTI_ITEM_SINGLE_INTERACTION
-        response = client.limit_num_interactions(1, data)
+@patch("app.services.database.gcp_bucket.read_table", return_value=None)
+def test_load_data_from_local_file(mock_gcp_read):
+    test_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'test_user_data.json')
+    client = database_client(table_name=test_file)
+    assert mock_gcp_read.called_once_with(test_file)
+    assert isinstance(client.table, list)
+    assert len(client.table) == 3
+
+
+def test_limit_num_interactions():
+        test_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'test_user_data.json')
+        client = database_client(table_name=test_file)
+        response = client.limit_num_interactions(1, client.table)
         assert len(response) == 1
 
         dataNone = None

@@ -61,21 +61,25 @@ docker run -p 50057:50057 --env pseudocone:latest
 3. ListTestDataUsers
 
     ```
-    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}], "start_interaction_time": "2018-02-01T00:00:26.318497Z", "test_period_duration":"P0Y1M7DT0H0M0S", "dataset":"anonymised_uas_extract.json"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsers
+    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}], "start_interaction_time": "2018-02-01T00:00:26.318497Z", "test_period_duration":"P0Y1M7DT0H0M0S", "dataset":"anonymised_uas_extract_list.json"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsers
     ```
     * Offset parameter not yet implemented so non-functional.
 
 4. ListInteractionItems
 
     ```
-grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user": {"id": "44378"}, "dataset":"anonymised_uas_extract.json", "end_interaction_time":"2018-05-15T14:13:33.5Z"}' localhost:50057 pseudocone.PseudoconeService.ListInteractions
+grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user": {"id": "44378"}, "dataset":"anonymised_uas_extract_list.json", "end_interaction_time":"2018-05-15T14:13:33.5Z"}' localhost:50057 pseudocone.PseudoconeService.ListInteractions
     ```
      * Offset parameter not yet implemented so non-functional.
 ## Tests
 Run tests using:
 ```
 pip3 install -r requirements_test.txt
-python3 -m pytest --cov-report term-missing --cov=app -vv --cov-branch tests
+pytest --cov-report term-missing --cov=app --cov-branch tests/ -vv -m "not integration"
+```
+Run integration tests:
+```
+pytest --cov-report term-missing --cov=app --cov-branch tests/ -vv -m "integration"
 ```
 ## Compile magical protocol buffer service from pseudocone.proto
 

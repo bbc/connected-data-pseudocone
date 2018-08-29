@@ -13,4 +13,4 @@ REQUEST_TIMEOUT = 5
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", DEFAULT_LOG_LEVEL)
 GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-DATA_DUMP_FILE_NAME = os.getenv("DATA_DUMP_FILE_NAME", "anonymised_uas_extract.json")
+DATA_DUMP_FILE_NAME = os.getenv("DATA_DUMP_FILE_NAME", "anonymised_uas_extract_list.json")
