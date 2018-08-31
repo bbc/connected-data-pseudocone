@@ -20,15 +20,14 @@ class database_client:
         self.table = self.load_data(table_name)
 
     def load_data(self, table_name=None):
+        if not table_name:
+            table_name = DATA_DUMP_FILE_NAME
 
         gcp_data = gcp_bucket.read_table(table_name)
         if gcp_data:
             return gcp_data
         else:
             try:
-                if not table_name:
-                    table_name = DATA_DUMP_FILE_NAME
-
                 with open(table_name, "r") as f:
                     items = json.load(f)
                     logger.info(f"Call returned {len(items)} items after reading local file.")

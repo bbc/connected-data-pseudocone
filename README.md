@@ -22,12 +22,18 @@ source env/bin/activate
 pip3 install -r requirements.txt
 ```
 
-2. Run the service:
+2. Set the environment variable
+To run locally, you will have to download the GCP credentials and set the $GOOGLE_APPLICATION_CREDENTIALS variable to the json file with the credentials. 
 
-* To run locally, you will have to set the $GOOGLE_APPLICATION_CREDENTIALS variable, which is a local path to a json
- file.
 ```
-GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS python3 -m app.pseudocone
+gcloud iam service-accounts keys create --iam-account=test-pseudocone@bbc-connected-data.iam.gserviceaccount.com key.json
+export GOOGLE_APPLICATION_CREDENTIALS=key.json
+```
+
+3. Run the service:
+
+```
+python3 -m app.pseudocone
 ```
 
 ### With Docker

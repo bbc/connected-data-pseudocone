@@ -44,7 +44,7 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
             logger.exception(err_message)
             raise ValueError(err_message)
 
-        if len(request.resource_type) == 0:
+        if not request.resource_type:
             resource_types = DEFAULT_PERMISSABLE_RESOURCE_TYPES
         else:
             resource_types = request.resource_type
@@ -73,13 +73,10 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
             logger.exception(err_message)
             raise ValueError(err_message)
 
-        if len(request.resource_type) == 0:
+        if not request.resource_type:
             resource_types = DEFAULT_PERMISSABLE_RESOURCE_TYPES
         else:
             resource_types = request.resource_type
-
-        if request.dataset == '':
-            request.dataset = DATA_DUMP_FILE_NAME
 
         client = database_client(table_name=request.dataset)
         user_interactions = client.filter_users_with_inclusion_list([request.user], user_limit=1)
