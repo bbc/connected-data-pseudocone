@@ -1,12 +1,14 @@
 import json
 import logging
 
+from cachetools import TTLCache, cached
 from gcloud import storage
 from google.auth.exceptions import DefaultCredentialsError
 from oauth2client.service_account import ServiceAccountCredentials
 from app.settings import DATA_DUMP_FILE_NAME, GOOGLE_APPLICATION_CREDENTIALS, SERVICE_NAME
 
 logger = logging.getLogger(SERVICE_NAME)
+SECONDS_A_DAY = 60 * 60 * 24
 
 
 def read_table(file_name=None):
@@ -50,11 +52,12 @@ def get_gcp_bucket():
         return None
 
 
+@cached(TTLCache(maxsize=1000000, ttl=SECONDS_A_DAY))
 def get_blob(bucket, file_name):
     """ Read data as json (and convert to dict)."""
     if bucket.blob(file_name).exists():
         logger.info(f"Now reading from GCP file {file_name}.")
-        items = json.load(bucket.blob(file_name, chunk_size=262144))
+        items = json.loads(bucket.blob(file_name, chunk_size=262144).download_as_string())
         logger.info(f"Call returned {len(items)} items after reading local file.")
         return items
     else:
