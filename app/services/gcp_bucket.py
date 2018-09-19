@@ -53,8 +53,10 @@ def get_gcp_bucket():
 def get_blob(bucket, file_name):
     """ Read data as json (and convert to dict)."""
     if bucket.blob(file_name).exists():
-        json_dict = json.loads(bucket.blob(file_name, chunk_size=262144).download_as_string())
-        return json_dict
+        logger.info(f"Now reading from GCP file {file_name}.")
+        items = json.load(bucket.blob(file_name, chunk_size=262144))
+        logger.info(f"Call returned {len(items)} items after reading local file.")
+        return items
     else:
         logger.warning(f"File '{file_name}' does not exist in GCP bucket. Will now try to read the file locally"
                        f" instead.")

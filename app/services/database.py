@@ -29,6 +29,7 @@ class database_client:
         else:
             try:
                 with open(table_name, "r") as f:
+                    logger.info(f"Now reading from local file {table_name}.")
                     items = json.load(f)
                     logger.info(f"Call returned {len(items)} items after reading local file.")
                     return items
