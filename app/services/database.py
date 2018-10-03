@@ -13,7 +13,7 @@ from app.utils.mapping import get_unique_vals_for_property
 logger = logging.getLogger(SERVICE_NAME)
 
 
-class database_client:
+class DatabaseClient:
 
     def __init__(self, table_name=None):
 
@@ -28,10 +28,12 @@ class database_client:
             return gcp_data
         else:
             try:
+                items = []
                 with open(table_name, "r") as f:
-                    items = json.load(f)
-                    logger.info(f"Call returned {len(items)} items after reading local file.")
-                    return items
+                    for line in f:
+                        items.append(json.loads(line))
+                logger.info(f"Call returned {len(items)} items after reading local file.")
+                return items
             except FileNotFoundError:
                 err_message = f"Could not read from local file {table_name}."
                 logger.exception(err_message)

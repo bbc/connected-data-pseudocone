@@ -37,7 +37,7 @@ def test_health_check(pseudocone_server):
     assert response == pseudocone_pb2.Empty()
 
 
-@patch("app.pseudocone.database_client.load_data", return_value=SINGLE_USER_SINGLE_ITEM_SINGLE_INTERACTION)
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_SINGLE_INTERACTION)
 def test_list_test_data_users(mock_db_data, pseudocone_server):
 
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
@@ -58,7 +58,7 @@ def test_list_test_data_users(mock_db_data, pseudocone_server):
     assert response.items[0].interactions[0].action == "ended"
 
 
-@patch("app.pseudocone.database_client.load_data", return_value=SINGLE_USER_ONE_EPISODE_ONE_CLIP)
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_ONE_EPISODE_ONE_CLIP)
 def test_list_test_data_users_with_resource_type(mock_db_data, pseudocone_server):
 
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
@@ -97,7 +97,7 @@ def test_list_test_data_users_with_resource_type(mock_db_data, pseudocone_server
     assert response.items[0].interactions[0].action == "started"
 
 
-@patch("app.pseudocone.database_client.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
 def test_list_test_data_users_multi_interaction(mock_db_data, pseudocone_server):
 
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
@@ -118,7 +118,7 @@ def test_list_test_data_users_multi_interaction(mock_db_data, pseudocone_server)
     assert response.items[0].interactions[0].action == "ended"
 
 
-@patch("app.pseudocone.database_client.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
 def test_list_test_data_users_missing_params(mock_db_data, pseudocone_server):
 
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
@@ -144,7 +144,7 @@ def test_list_test_data_users_missing_params(mock_db_data, pseudocone_server):
         response = pseudocone_server["stub"].ListTestDataUsers(request=request_without_duration_or_start)
 
 
-@patch("app.pseudocone.database_client.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
 def test_list_test_data_users_multi_interaction2(mock_db_data, pseudocone_server):
 
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
@@ -165,7 +165,7 @@ def test_list_test_data_users_multi_interaction2(mock_db_data, pseudocone_server
     assert response.items[0].interactions[0].action == "ended"
 
 
-@patch("app.pseudocone.database_client.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
 def test_list_test_data_users_date_format_error(mock_db_data, pseudocone_server):
 
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
@@ -186,7 +186,7 @@ def test_list_test_data_users_date_format_error(mock_db_data, pseudocone_server)
         response = pseudocone_server["stub"].ListTestDataUsers(request=request)
 
 
-@patch("app.pseudocone.database_client.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
 def test_list_interactions(mock_db_data, pseudocone_server):
     user = pseudocone_pb2.UserParam(id="1")
     request = pseudocone_pb2.ListInteractionsRequest(limit=1,
@@ -201,7 +201,7 @@ def test_list_interactions(mock_db_data, pseudocone_server):
     assert len(response.interactions) is 1
 
 
-@patch("app.pseudocone.database_client.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
 def test_list_interactions_missing_params(mock_db_data, pseudocone_server):
     user = pseudocone_pb2.UserParam(id="1")
     request_missing_user = pseudocone_pb2.ListInteractionsRequest(limit=1,
