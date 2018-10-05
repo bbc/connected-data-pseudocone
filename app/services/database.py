@@ -6,7 +6,6 @@ from datetime import datetime
 
 from app.pseudocone_pb2 import ResourceType
 from app.services import gcp_bucket
-from app.settings import GOOGLE_APPLICATION_CREDENTIALS
 from app.settings import DATA_DUMP_FILE_NAME, SERVICE_NAME
 from app.utils.mapping import get_unique_vals_for_property
 
@@ -29,6 +28,7 @@ class DatabaseClient:
         else:
             try:
                 items = []
+                logger.info(f"Loading data from local file {table_name}.")
                 with open(table_name, "r") as f:
                     for line in f:
                         items.append(json.loads(line))

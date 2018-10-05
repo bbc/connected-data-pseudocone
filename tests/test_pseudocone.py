@@ -2,7 +2,7 @@ import grpc
 import pytest
 import random
 
-from unittest.mock import MagicMock, patch, Mock
+from unittest.mock import patch, Mock
 
 from app.pseudocone import Pseudocone, create_server
 from app import pseudocone_pb2, pseudocone_pb2_grpc
@@ -134,14 +134,14 @@ def test_list_test_data_users_missing_params(mock_db_data, pseudocone_server):
         pseudocone_pb2.ListTestDataUsersRequest(limit=1, users=users,
                                                 start_interaction_time="2018-02-01T00:00:26.318497Z")
 
-    with pytest.raises(Exception) as error:
-        response = pseudocone_server["stub"].ListTestDataUsers(request=request_without_start)
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsers(request=request_without_start)
 
-    with pytest.raises(Exception) as error:
-        response = pseudocone_server["stub"].ListTestDataUsers(request=request_without_duration)
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsers(request=request_without_duration)
 
-    with pytest.raises(Exception) as error:
-        response = pseudocone_server["stub"].ListTestDataUsers(request=request_without_duration_or_start)
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsers(request=request_without_duration_or_start)
 
 
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
@@ -174,16 +174,16 @@ def test_list_test_data_users_date_format_error(mock_db_data, pseudocone_server)
                                                       start_interaction_time="2018-0201T00:00:26.318497Z",
                                                       test_period_duration="P0Y1M7DT0H0M0S")
 
-    with pytest.raises(Exception) as error:
-        response = pseudocone_server["stub"].ListTestDataUsers(request=request)
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsers(request=request)
 
     request = pseudocone_pb2.ListTestDataUsersRequest(limit=1,
                                                       users=users,
                                                       start_interaction_time="2018-02-01T00:00:26.318497Z",
                                                       test_period_duration="P0Y17DT0H0YM80S")
 
-    with pytest.raises(Exception) as error:
-        response = pseudocone_server["stub"].ListTestDataUsers(request=request)
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsers(request=request)
 
 
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
@@ -213,11 +213,11 @@ def test_list_interactions_missing_params(mock_db_data, pseudocone_server):
     request_missing_duration =\
         pseudocone_pb2.ListInteractionsRequest(limit=1, end_interaction_time="2018-03-02T00:00:00.318497Z")
 
-    with pytest.raises(Exception) as error:
-        response = pseudocone_server["stub"].ListInteractions(request=request_missing_user)
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListInteractions(request=request_missing_user)
 
-    with pytest.raises(Exception) as error:
-        response = pseudocone_server["stub"].ListInteractions(request=request_missing_end)
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListInteractions(request=request_missing_end)
 
-    with pytest.raises(Exception) as error:
-        response = pseudocone_server["stub"].ListInteractions(request=request_missing_duration)
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListInteractions(request=request_missing_duration)

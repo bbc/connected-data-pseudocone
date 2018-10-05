@@ -38,73 +38,82 @@ python3 -m app.pseudocone
 
 ### With Docker
 1. Build the image:
+
 ```
 docker build -t pseudocone:latest .
 ```
 
 2. Run the image:
+
 ```
 docker run -p 50057:50057 --env pseudocone:latest
 ```
 
 ## Interact with Service Locally
+
 **Once the service is running**, to interact with the gRPC interface use the following process.
 0. Get your/a user id:
 
 1. Install [gRPCurl](https://github.com/fullstorydev/grpcurl):
-    ```
-    # ensure go path correctly set: export GOPATH="$HOME/go"
-    export PATH="$GOPATH/bin:$PATH"
-    go get github.com/fullstorydev/grpcurl/...
-    go install github.com/fullstorydev/grpcurl/...
-    ```
+```
+# ensure go path correctly set: export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+go get github.com/fullstorydev/grpcurl/...
+go install github.com/fullstorydev/grpcurl/...
+```
 2. HealthCheck:
 
-    This should return an empty response.
-    ```
-    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{}' localhost:50057 pseudocone.PseudoconeService.HealthCheck
-    ```
+This should return an empty response.
+
+```
+grpcurl -protoset ./pseudocone.protoset -plaintext -d '{}' localhost:50057 pseudocone.PseudoconeService.HealthCheck
+```
+
 3. ListTestDataUsers
 
-    ```
-    grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}], "start_interaction_time": "2018-02-01T00:00:26.318497Z", "test_period_duration":"P0Y1M7DT0H0M0S", "dataset":"anonymised_uas_extract_list.json"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsers
-    ```
-    * Offset parameter not yet implemented so non-functional.
+```
+grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}], "start_interaction_time": "2018-02-01T00:00:26.318497Z", "test_period_duration":"P0Y1M7DT0H0M0S", "dataset":"anonymised_uas_extract_list.json"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsers
+```
+
+* Offset parameter not yet implemented so non-functional.
 
 4. ListInteractionItems
 
-    ```
+```
 grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user": {"id": "44378"}, "dataset":"anonymised_uas_extract_list.json", "end_interaction_time":"2018-05-15T14:13:33.5Z"}' localhost:50057 pseudocone.PseudoconeService.ListInteractions
-    ```
-     * Offset parameter not yet implemented so non-functional.
+```
+
+* Offset parameter not yet implemented so non-functional.
+
 ## Tests
 Run tests using:
 ```
 pip3 install -r requirements_test.txt
 pytest --cov-report term-missing --cov=app --cov-branch tests/ -vv -m "not integration"
 ```
-Run integration tests:
+Run integration tests (you need GCP credentials for this):
 ```
-pytest --cov-report term-missing --cov=app --cov-branch tests/ -vv -m "integration"
+GOOGLE_APPLICATION_CREDENTIALS=key.json pytest --cov-report term-missing --cov=app --cov-branch tests/ -vv -m "integration"
 ```
+
 ## Compile magical protocol buffer service from pseudocone.proto
 
 Generate the service stub and message definitions in Python:
 
 ```
-    python -m grpc_tools.protoc -I. -I$GOPATH/src  -I$GOPATH/src/github.com/googleapis/googleapis  --python_out=./app --grpc_python_out=./app pseudocone.proto
+python -m grpc_tools.protoc -I. -I$GOPATH/src  -I$GOPATH/src/github.com/googleapis/googleapis  --python_out=./app --grpc_python_out=./app pseudocone.proto
 ```
 
 Don't forget to rename the import path in `app/pseudocone_pb2_grpc.py` from:
 
 ```
-    import pseudocone_pb2 as pseudocone__pb2
+import pseudocone_pb2 as pseudocone__pb2
 ```
 
 To:
 
 ```
-    import app.pseudocone_pb2 as rubus__pb2
+import app.pseudocone_pb2 as rubus__pb2
 ```
 
 #### 2. Regenerate `.protoset` File

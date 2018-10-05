@@ -6,6 +6,7 @@ pipeline:
       - pip install -r requirements_test.txt
       - python3 -m pytest --cov-report term-missing --cov=app tests/ --cov-branch -vv -m "not integration"
       - pycodestyle app tests
+      - flake8
   slack:
     image: plugins/slack
     channel: notifications

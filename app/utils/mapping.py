@@ -1,7 +1,12 @@
 import datetime
+import logging
+
 import isodate
 
 from app import pseudocone_pb2
+from app.settings import SERVICE_NAME
+
+logger = logging.getLogger(SERVICE_NAME)
 
 
 def action_context_to_iso8601_duration(action_context):
@@ -10,10 +15,11 @@ def action_context_to_iso8601_duration(action_context):
     Example:
         "urn:bbc:tv:version_offset:p05xxtvp#150" -> "PT150"
     """
-    if '#' not in action_context:
-        return
-    duration = action_context.split('#')[-1]
-    return isodate.duration_isoformat(datetime.timedelta(seconds=float(duration)))
+    try:
+        duration = action_context.split('#')[-1]
+        return isodate.duration_isoformat(datetime.timedelta(seconds=float(duration)))
+    except Exception as e:
+        logger.exception(e)
 
 
 def pid2uri(pid):
@@ -33,9 +39,12 @@ def convert_json_list_to_pseudocone_response(data):
         user_items = []
 
         for item_id in unique_item_ids:
-            user_item_interactions = get_data_matching_property(user_data, "resourceid", item_id)
-            interaction = extract_latest_interaction(user_item_interactions)
-            user_items.append(convert_db_object_to_interaction_item(interaction))
+            try:
+                user_item_interactions = get_data_matching_property(user_data, "resourceid", item_id)
+                interaction = extract_latest_interaction(user_item_interactions)
+                user_items.append(convert_db_object_to_interaction_item(interaction))
+            except Exception as e:
+                logger.exception(e)
 
         user = pseudocone_pb2.UserParam(id=user_id, cookie=None)
         user_interaction_item = pseudocone_pb2.TestDataUser(user=user, interactions=user_items)

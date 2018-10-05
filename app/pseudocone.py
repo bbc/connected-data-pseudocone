@@ -8,9 +8,8 @@ from stackdriver_logging.jsonlog import configure_json_logging
 
 from app import pseudocone_pb2_grpc, pseudocone_pb2
 from app.services.database import DatabaseClient
-from app.settings import ONE_DAY_IN_SECONDS, MAX_WORKERS, GRPC_PORT, DEFAULT_PERMISSABLE_RESOURCE_TYPES, SERVICE_NAME,\
-    LOG_LEVEL
-from app.utils.log import logger
+from app.settings import ONE_DAY_IN_SECONDS, MAX_WORKERS, GRPC_PORT, DEFAULT_PERMISSABLE_RESOURCE_TYPES, \
+    SERVICE_NAME, LOG_LEVEL
 from app.utils.mapping import convert_json_list_to_pseudocone_response, \
     convert_single_user_interactions_to_proto_response
 from app.utils.server_decorators import for_all_methods, log_event, catch_exceptions
@@ -29,6 +28,10 @@ logging.getLogger('b3').setLevel(logging.WARNING)
 @for_all_methods(catch_exceptions)
 @for_all_methods(log_event)
 class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
+
+    def __init__(self):
+        self.dataset = None
+        self.client = None
 
     def ListTestDataUsers(self, request, context):
 
@@ -49,13 +52,18 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
         else:
             resource_types = request.resource_type
 
-        client = DatabaseClient(table_name=request.dataset)
-        user_data = client.filter_users_with_inclusion_list(request.users, request.limit)
-        time_filtered_data = client.filter_interactions_between_dates(iso_start_date=request.start_interaction_time,
-                                                                      iso_duration=request.test_period_duration,
-                                                                      db_table=user_data)
+        if not self.client or self.dataset != request.dataset:
+            # (re)load data if the dataset has changed
+            self.dataset = request.dataset
+            self.client = DatabaseClient(table_name=request.dataset)
 
-        filtered_resource_type = client.filter_resource_type(resource_types, db_table=time_filtered_data)
+        user_data = self.client.filter_users_with_inclusion_list(request.users, request.limit)
+        time_filtered_data = self.client.filter_interactions_between_dates(
+            iso_start_date=request.start_interaction_time,
+            iso_duration=request.test_period_duration,
+            db_table=user_data)
+
+        filtered_resource_type = self.client.filter_resource_type(resource_types, db_table=time_filtered_data)
         pseudocone_response = convert_json_list_to_pseudocone_response(filtered_resource_type)
         return pseudocone_response
 
@@ -78,13 +86,16 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
         else:
             resource_types = request.resource_type
 
-        client = DatabaseClient(table_name=request.dataset)
-        user_interactions = client.filter_users_with_inclusion_list([request.user], user_limit=1)
-        time_filtered_data = client.filter_interactions_between_dates(iso_end_date=request.end_interaction_time,
-                                                                      iso_duration=request.train_period_duration,
-                                                                      db_table=user_interactions)
-        filtered_resource_type = client.filter_resource_type(resource_types, db_table=time_filtered_data)
-        filtered_with_limit_data = client.limit_num_interactions(request.limit, filtered_resource_type)
+        if not self.client or self.dataset != request.dataset:
+            self.dataset = request.dataset
+            self.client = DatabaseClient(table_name=request.dataset)
+
+        user_interactions = self.client.filter_users_with_inclusion_list([request.user], user_limit=1)
+        time_filtered_data = self.client.filter_interactions_between_dates(iso_end_date=request.end_interaction_time,
+                                                                           iso_duration=request.train_period_duration,
+                                                                           db_table=user_interactions)
+        filtered_resource_type = self.client.filter_resource_type(resource_types, db_table=time_filtered_data)
+        filtered_with_limit_data = self.client.limit_num_interactions(request.limit, filtered_resource_type)
         list_interactions_response = convert_single_user_interactions_to_proto_response(filtered_with_limit_data)
         return list_interactions_response
 

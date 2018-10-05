@@ -1,5 +1,5 @@
 import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -132,12 +132,12 @@ def test_filter_interactions_between_dates_incorrect_params(db_data):
     end_date = "2018-03-04T00:00:00.000Z"
     duration = "P1D"
 
-    with pytest.raises(Exception) as error:
-        filtered_data = client.filter_interactions_between_dates()
+    with pytest.raises(Exception):
+        client.filter_interactions_between_dates()
 
-    with pytest.raises(Exception) as error:
-        filtered_data = client.filter_interactions_between_dates(iso_start_date=start_date, iso_end_date=end_date,
-                                                                 iso_duration=duration)
+    with pytest.raises(Exception):
+        client.filter_interactions_between_dates(iso_start_date=start_date, iso_end_date=end_date,
+                                                 iso_duration=duration)
 
 
 @pytest.mark.integration

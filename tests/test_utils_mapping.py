@@ -1,5 +1,3 @@
-from unittest.mock import patch
-
 import pytest
 
 from app.utils.mapping import action_context_to_iso8601_duration, pid2uri

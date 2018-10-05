@@ -53,6 +53,7 @@ def get_gcp_bucket():
 def get_blob(bucket, file_name):
     """ Read data as json (and convert to dict)."""
     if bucket.blob(file_name).exists():
+        logger.info(f"Loading data from file {file_name} in GCP bucket {bucket}.")
         # json_dict = json.loads(bucket.blob(file_name, chunk_size=262144).download_as_string())
         json_dict = [
             json.loads(item) for item in bucket.blob(file_name, chunk_size=262144)
