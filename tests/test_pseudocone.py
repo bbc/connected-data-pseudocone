@@ -32,14 +32,12 @@ def pseudocone_server():
 
 
 def test_health_check(pseudocone_server):
-
     response = pseudocone_server["stub"].HealthCheck(pseudocone_pb2.Empty())
     assert response == pseudocone_pb2.Empty()
 
 
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_SINGLE_INTERACTION)
 def test_list_test_data_users(mock_db_data, pseudocone_server):
-
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
     request = pseudocone_pb2.ListTestDataUsersRequest(limit=1,
                                                       users=users,
@@ -58,9 +56,49 @@ def test_list_test_data_users(mock_db_data, pseudocone_server):
     assert response.items[0].interactions[0].action == "ended"
 
 
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_SINGLE_INTERACTION)
+def test_list_test_data_users_between_dates(mock_db_data, pseudocone_server):
+    # Should bring back test for data for a single user between the start and end date
+    users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
+    request = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                  users=users,
+                                                                  start_interaction_time="2018-03-01T17:53:32.000Z",
+                                                                  end_interaction_time="2018-03-01T19:53:32.000Z")
+
+    response = pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request)
+    assert len(response.items) == 1
+    assert response.items[0].user.id == "1"
+    assert len(response.items[0].interactions) == 1
+    assert response.items[0].interactions[0].pid == "b09s3kq5"
+    assert response.items[0].interactions[0].uri == "programmes:bbc.co.uk,2018/FIXME/b09s3kq5"
+    assert response.items[0].interactions[0].activity_time == "2018-03-01T18:53:32.000Z"
+    assert response.items[0].interactions[0].completion == "PT11M"
+    assert response.items[0].interactions[0].activity_type == "PLAYS"
+    assert response.items[0].interactions[0].action == "ended"
+
+    # Should return no items when activity time is before the start and end interaction time
+    users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
+    request = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                  users=users,
+                                                                  start_interaction_time="2017-03-01T17:53:32.000Z",
+                                                                  end_interaction_time="2017-03-01T19:53:32.000Z")
+
+    response = pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request)
+    assert len(response.items) == 0
+
+    # Should return no items when activity time is after the start and end interaction time
+    users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
+    request = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                  users=users,
+                                                                  start_interaction_time="2019-03-01T17:53:32.000Z",
+                                                                  end_interaction_time="2019-03-01T19:53:32.000Z")
+
+    response = pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request)
+    assert len(response.items) == 0
+
+
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_ONE_EPISODE_ONE_CLIP)
 def test_list_test_data_users_with_resource_type(mock_db_data, pseudocone_server):
-
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
     request = pseudocone_pb2.ListTestDataUsersRequest(limit=1,
                                                       users=users,
@@ -97,9 +135,46 @@ def test_list_test_data_users_with_resource_type(mock_db_data, pseudocone_server
     assert response.items[0].interactions[0].action == "started"
 
 
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_ONE_EPISODE_ONE_CLIP)
+def test_list_test_data_users_between_dates_with_resource_type(mock_db_data, pseudocone_server):
+    users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
+    request = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                  users=users,
+                                                                  resource_type=[ResourceType.Value("CLIP")],
+                                                                  start_interaction_time="2018-01-01T19:53:32.000Z",
+                                                                  end_interaction_time="2018-05-01T19:53:32.000Z")
+
+    response = pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request)
+    assert len(response.items) == 1
+    assert response.items[0].user.id == "1"
+    assert len(response.items[0].interactions) == 1
+    assert response.items[0].interactions[0].pid == "pid2"
+    assert response.items[0].interactions[0].uri == "programmes:bbc.co.uk,2018/FIXME/pid2"
+    assert response.items[0].interactions[0].activity_time == "2018-03-02T19:53:32.000Z"
+    assert response.items[0].interactions[0].completion == "PT11M"
+    assert response.items[0].interactions[0].activity_type == "PLAYS"
+    assert response.items[0].interactions[0].action == "ended"
+
+    request = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                  users=users,
+                                                                  resource_type=[ResourceType.Value("EPISODE")],
+                                                                  start_interaction_time="2018-01-01T00:00:26.318497Z",
+                                                                  end_interaction_time="2018-05-01T19:53:32.000Z")
+
+    response = pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request)
+    assert len(response.items) == 1
+    assert response.items[0].user.id == "1"
+    assert len(response.items[0].interactions) == 1
+    assert response.items[0].interactions[0].pid == "pid1"
+    assert response.items[0].interactions[0].uri == "programmes:bbc.co.uk,2018/FIXME/pid1"
+    assert response.items[0].interactions[0].activity_time == "2018-03-01T19:53:32.000Z"
+    assert response.items[0].interactions[0].completion == "P0D"
+    assert response.items[0].interactions[0].activity_type == "PLAYS"
+    assert response.items[0].interactions[0].action == "started"
+
+
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
 def test_list_test_data_users_multi_interaction(mock_db_data, pseudocone_server):
-
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
     request = pseudocone_pb2.ListTestDataUsersRequest(limit=1,
                                                       users=users,
@@ -119,14 +194,33 @@ def test_list_test_data_users_multi_interaction(mock_db_data, pseudocone_server)
 
 
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
-def test_list_test_data_users_missing_params(mock_db_data, pseudocone_server):
+def test_list_test_data_users_between_dates_multi_interaction(mock_db_data, pseudocone_server):
+    users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
+    request = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                  users=users,
+                                                                  start_interaction_time="2018-01-01T19:53:32.000Z",
+                                                                  end_interaction_time="2018-05-01T19:53:32.000Z")
 
+    response = pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request)
+    assert len(response.items) == 1
+    assert response.items[0].user.id == "1"
+    assert len(response.items[0].interactions) == 1
+    assert response.items[0].interactions[0].pid == "b09s3kq5"
+    assert response.items[0].interactions[0].uri == "programmes:bbc.co.uk,2018/FIXME/b09s3kq5"
+    assert response.items[0].interactions[0].activity_time == "2018-03-01T19:53:32.000Z"
+    assert response.items[0].interactions[0].completion == "PT11M"
+    assert response.items[0].interactions[0].activity_type == "PLAYS"
+    assert response.items[0].interactions[0].action == "ended"
+
+
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+def test_list_test_data_users_missing_params(mock_db_data, pseudocone_server):
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
     request_without_start = pseudocone_pb2.ListTestDataUsersRequest(limit=1,
                                                                     users=users,
                                                                     test_period_duration="P0Y1M7DT0H0M0S")
 
-    request_without_duration =\
+    request_without_duration = \
         pseudocone_pb2.ListTestDataUsersRequest(limit=1, users=users,
                                                 start_interaction_time="2018-02-01T00:00:26.318497Z")
 
@@ -145,8 +239,32 @@ def test_list_test_data_users_missing_params(mock_db_data, pseudocone_server):
 
 
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
-def test_list_test_data_users_multi_interaction2(mock_db_data, pseudocone_server):
+def test_list_test_data_users_between_dates_missing_params(mock_db_data, pseudocone_server):
+    users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
 
+    request_without_start = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                                users=users,
+                                                                                end_interaction_time="P0Y1M7DT0H0M0S")
+
+    request_without_end = \
+        pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1, users=users,
+                                                            start_interaction_time="2018-02-01T00:00:26.318497Z")
+
+    request_without_start_or_end = \
+        pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1, users=users)
+
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request_without_start)
+
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request_without_end)
+
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request_without_start_or_end)
+
+
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+def test_list_test_data_users_multi_interaction2(mock_db_data, pseudocone_server):
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
     request = pseudocone_pb2.ListTestDataUsersRequest(limit=1,
                                                       users=users,
@@ -167,7 +285,6 @@ def test_list_test_data_users_multi_interaction2(mock_db_data, pseudocone_server
 
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
 def test_list_test_data_users_date_format_error(mock_db_data, pseudocone_server):
-
     users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
     request = pseudocone_pb2.ListTestDataUsersRequest(limit=1,
                                                       users=users,
@@ -184,6 +301,26 @@ def test_list_test_data_users_date_format_error(mock_db_data, pseudocone_server)
 
     with pytest.raises(Exception):
         pseudocone_server["stub"].ListTestDataUsers(request=request)
+
+
+@patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
+def test_list_test_data_users_between_dates_date_format_error(mock_db_data, pseudocone_server):
+    users = [pseudocone_pb2.UserParam(id="1"), pseudocone_pb2.UserParam(id="2")]
+    request = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                  users=users,
+                                                                  start_interaction_time="201801-01T00:00:26.318497Z",
+                                                                  end_interaction_time="2018-05-01T00:00:26.318497Z")
+
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request)
+
+    request = pseudocone_pb2.ListTestDataUsersBetweenDatesRequest(limit=1,
+                                                                  users=users,
+                                                                  start_interaction_time="2018-01-01T00:00:26.318497Z",
+                                                                  end_interaction_time="201805-01T00:00:26.318497Z")
+
+    with pytest.raises(Exception):
+        pseudocone_server["stub"].ListTestDataUsersBetweenDates(request=request)
 
 
 @patch("app.pseudocone.DatabaseClient.load_data", return_value=SINGLE_USER_SINGLE_ITEM_MULTI_INTERACTION)
@@ -210,7 +347,7 @@ def test_list_interactions_missing_params(mock_db_data, pseudocone_server):
     request_missing_end = pseudocone_pb2.ListInteractionsRequest(limit=1,
                                                                  user=user,
                                                                  train_period_duration="P0Y0M1DT0H0M0S")
-    request_missing_duration =\
+    request_missing_duration = \
         pseudocone_pb2.ListInteractionsRequest(limit=1, end_interaction_time="2018-03-02T00:00:00.318497Z")
 
     with pytest.raises(Exception):

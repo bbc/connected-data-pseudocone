@@ -83,6 +83,13 @@ grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "
 grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"user": {"id": "44378"}, "dataset":"anonymised_uas_extract_list.json", "end_interaction_time":"2018-05-15T14:13:33.5Z"}' localhost:50057 pseudocone.PseudoconeService.ListInteractions
 ```
 
+5. ListTestDataUsersBetweenDates
+
+```
+grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "users":[{"id":"1155"}, {"id": "4535"}], "start_interaction_time": "2018-01-01T00:00:26.318497Z", "end_interaction_time":"2018-05-01T00:00:26.318497Z", "dataset":"anonymised_uas_extract_list.json"}' localhost:50057 pseudocone.PseudoconeService.ListTestDataUsersBetweenDates
+
+```
+
 * Offset parameter not yet implemented so non-functional.
 
 ## Tests
@@ -113,7 +120,7 @@ import pseudocone_pb2 as pseudocone__pb2
 To:
 
 ```
-import app.pseudocone_pb2 as rubus__pb2
+import app.pseudocone_pb2 as pseudocone_pb2
 ```
 
 #### 2. Regenerate `.protoset` File

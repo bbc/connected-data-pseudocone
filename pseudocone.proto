@@ -105,6 +105,35 @@ message ListInteractionsRequest {
 
 }
 
+message ListTestDataUsersBetweenDatesRequest {
+
+     // Number of results to return
+    int32 limit = 1;
+
+    // Offset of results to return
+    int32 offset = 2;
+
+    // List of user IDs to include in the analysis
+    repeated UserParam users = 3;
+
+    // Dataset to call data from
+    string dataset = 4;
+
+    // Only fetch user interaction items after this date-time
+    // Expected ISO 8601 format, e.g., '2018-04-30T14:05:26.318497'
+    string start_interaction_time = 5;
+
+    // Only fetch user interaction items before this date-time
+    // Expected ISO 8601 format, e.g., '2018-04-30T14:05:26.318497'
+    string end_interaction_time = 6;
+
+    // Resource type to be returned in response (e.g. 'clip', 'episode')
+    repeated ResourceType resource_type = 7;
+
+    // Map containing values for 'X-B3-TraceId', 'X-B3-ParentSpanId', 'X-B3-SpanId', 'X-B3-Sampled', and 'X-B3-Flags'
+    map<string,string> b3_values = 8;
+}
+
 
 // RESPONSES
 
@@ -120,6 +149,11 @@ message ListInteractionsResponse {
 
 }
 
+message ListTestDataUsersBetweenDatesResponse {
+
+    repeated TestDataUser items = 1;
+}
+
 message Empty {}
 
 
@@ -132,6 +166,9 @@ service PseudoconeService {
 
     // For a queried user ID, it returns a corresponding list of interaction items before a given date-time.
     rpc ListInteractions(ListInteractionsRequest) returns (ListInteractionsResponse) {}
+
+    //
+    rpc ListTestDataUsersBetweenDates(ListTestDataUsersBetweenDatesRequest) returns (ListTestDataUsersBetweenDatesResponse) {}
 
     // Health check
     rpc HealthCheck(Empty) returns (Empty) {}

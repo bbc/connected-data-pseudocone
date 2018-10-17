@@ -25,6 +25,11 @@ class PseudoconeServiceStub(object):
         request_serializer=pseudocone__pb2.ListInteractionsRequest.SerializeToString,
         response_deserializer=pseudocone__pb2.ListInteractionsResponse.FromString,
         )
+    self.ListTestDataUsersBetweenDates = channel.unary_unary(
+        '/pseudocone.PseudoconeService/ListTestDataUsersBetweenDates',
+        request_serializer=pseudocone__pb2.ListTestDataUsersBetweenDatesRequest.SerializeToString,
+        response_deserializer=pseudocone__pb2.ListTestDataUsersBetweenDatesResponse.FromString,
+        )
     self.HealthCheck = channel.unary_unary(
         '/pseudocone.PseudoconeService/HealthCheck',
         request_serializer=pseudocone__pb2.Empty.SerializeToString,
@@ -51,6 +56,13 @@ class PseudoconeServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def ListTestDataUsersBetweenDates(self, request, context):
+    """
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def HealthCheck(self, request, context):
     """Health check
     """
@@ -70,6 +82,11 @@ def add_PseudoconeServiceServicer_to_server(servicer, server):
           servicer.ListInteractions,
           request_deserializer=pseudocone__pb2.ListInteractionsRequest.FromString,
           response_serializer=pseudocone__pb2.ListInteractionsResponse.SerializeToString,
+      ),
+      'ListTestDataUsersBetweenDates': grpc.unary_unary_rpc_method_handler(
+          servicer.ListTestDataUsersBetweenDates,
+          request_deserializer=pseudocone__pb2.ListTestDataUsersBetweenDatesRequest.FromString,
+          response_serializer=pseudocone__pb2.ListTestDataUsersBetweenDatesResponse.SerializeToString,
       ),
       'HealthCheck': grpc.unary_unary_rpc_method_handler(
           servicer.HealthCheck,

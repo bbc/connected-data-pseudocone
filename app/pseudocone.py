@@ -67,6 +67,41 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
         pseudocone_response = convert_json_list_to_pseudocone_response(filtered_resource_type)
         return pseudocone_response
 
+    def ListTestDataUsersBetweenDates(self, request, context):
+
+        if not request.end_interaction_time:
+            err_message = "Requests to Pseudocone ListTestDataUsersBetweenDates() endpoint must include the " \
+                          "'end_interaction_time' parameter."
+            logger.exception(err_message)
+            raise ValueError(err_message)
+
+        if not request.start_interaction_time:
+            err_message = "Requests to Pseudocone ListTestDataUsersBetweenDates() endpoint must include the " \
+                          "'start_interaction_time' parameter."
+            logger.exception(err_message)
+            raise ValueError(err_message)
+
+        if not request.resource_type:
+            resource_types = DEFAULT_PERMISSABLE_RESOURCE_TYPES
+        else:
+            resource_types = request.resource_type
+
+        if not self.client or self.dataset != request.dataset:
+            # (re)load data if the dataset has changed
+            self.dataset = request.dataset
+            self.client = DatabaseClient(table_name=request.dataset)
+
+        user_data = self.client.filter_users_with_inclusion_list(request.users, request.limit)
+
+        time_filtered_data = self.client.filter_interactions_between_dates(
+            iso_start_date=request.start_interaction_time,
+            iso_end_date=request.end_interaction_time,
+            db_table=user_data)
+
+        filtered_resource_type = self.client.filter_resource_type(resource_types, db_table=time_filtered_data)
+        pseudocone_response = convert_json_list_to_pseudocone_response(filtered_resource_type)
+        return pseudocone_response
+
     def ListInteractions(self, request, context):
         """List user interactions according to the `pseudocone.proto` spec."""
 
