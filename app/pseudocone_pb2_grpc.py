@@ -30,6 +30,11 @@ class PseudoconeServiceStub(object):
         request_serializer=pseudocone__pb2.ListTestDataUsersBetweenDatesRequest.SerializeToString,
         response_deserializer=pseudocone__pb2.ListTestDataUsersBetweenDatesResponse.FromString,
         )
+    self.ListReactions = channel.unary_unary(
+        '/pseudocone.PseudoconeService/ListReactions',
+        request_serializer=pseudocone__pb2.ListReactionsRequest.SerializeToString,
+        response_deserializer=pseudocone__pb2.ListReactionsResponse.FromString,
+        )
     self.HealthCheck = channel.unary_unary(
         '/pseudocone.PseudoconeService/HealthCheck',
         request_serializer=pseudocone__pb2.Empty.SerializeToString,
@@ -63,6 +68,15 @@ class PseudoconeServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def ListReactions(self, request, context):
+    """List interaction items, each containing single-user interaction data from UAS about a single media item
+
+    For a queried user ID and list of media item URIs, it returns a corresponding list of interaction items
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def HealthCheck(self, request, context):
     """Health check
     """
@@ -87,6 +101,11 @@ def add_PseudoconeServiceServicer_to_server(servicer, server):
           servicer.ListTestDataUsersBetweenDates,
           request_deserializer=pseudocone__pb2.ListTestDataUsersBetweenDatesRequest.FromString,
           response_serializer=pseudocone__pb2.ListTestDataUsersBetweenDatesResponse.SerializeToString,
+      ),
+      'ListReactions': grpc.unary_unary_rpc_method_handler(
+          servicer.ListReactions,
+          request_deserializer=pseudocone__pb2.ListReactionsRequest.FromString,
+          response_serializer=pseudocone__pb2.ListReactionsResponse.SerializeToString,
       ),
       'HealthCheck': grpc.unary_unary_rpc_method_handler(
           servicer.HealthCheck,

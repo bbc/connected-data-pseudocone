@@ -8,16 +8,15 @@ from stackdriver_logging.jsonlog import configure_json_logging
 
 from app import pseudocone_pb2_grpc, pseudocone_pb2
 from app.services.database import DatabaseClient
-from app.settings import ONE_DAY_IN_SECONDS, MAX_WORKERS, GRPC_PORT, DEFAULT_PERMISSABLE_RESOURCE_TYPES, \
-    SERVICE_NAME, LOG_LEVEL
+from app.settings import ONE_DAY_IN_SECONDS, MAX_WORKERS, GRPC_PORT, DEFAULT_PERMISSABLE_RESOURCE_TYPES
+
+from app.utils.log import logger
 from app.utils.mapping import convert_json_list_to_pseudocone_response, \
     convert_single_user_interactions_to_proto_response
 from app.utils.server_decorators import for_all_methods, log_event, catch_exceptions
 
 # logging
 configure_json_logging('bbc-connected-data')
-logger = logging.getLogger(SERVICE_NAME)
-logging.getLogger(SERVICE_NAME).setLevel(LOG_LEVEL)
 
 logging.getLogger('werkzeug').setLevel(logging.WARNING)
 logging.getLogger('google.auth.transport.requests').setLevel(logging.WARNING)
@@ -131,6 +130,7 @@ class Pseudocone(pseudocone_pb2_grpc.PseudoconeServiceServicer):
                                                                            db_table=user_interactions)
         filtered_resource_type = self.client.filter_resource_type(resource_types, db_table=time_filtered_data)
         filtered_with_limit_data = self.client.limit_num_interactions(request.limit, filtered_resource_type)
+
         list_interactions_response = convert_single_user_interactions_to_proto_response(filtered_with_limit_data)
         return list_interactions_response
 

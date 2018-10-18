@@ -93,10 +93,9 @@ grpcurl -protoset ./pseudocone.protoset -plaintext -d '{"limit":8, "offset":1, "
 * Offset parameter not yet implemented so non-functional.
 
 ## Tests
-Run tests using:
+Run tests using make:
 ```
-pip3 install -r requirements_test.txt
-pytest --cov-report term-missing --cov=app --cov-branch tests/ -vv -m "not integration"
+make test
 ```
 Run integration tests (you need GCP credentials for this):
 ```
@@ -108,37 +107,20 @@ GOOGLE_APPLICATION_CREDENTIALS=key.json pytest --cov-report term-missing --cov=a
 Generate the service stub and message definitions in Python:
 
 ```
-python -m grpc_tools.protoc -I. -I$GOPATH/src  -I$GOPATH/src/github.com/googleapis/googleapis  --python_out=./app --grpc_python_out=./app pseudocone.proto
+make proto
 ```
 
-Don't forget to rename the import path in `app/pseudocone_pb2_grpc.py` from:
-
-```
-import pseudocone_pb2 as pseudocone__pb2
-```
-
-To:
-
-```
-import app.pseudocone_pb2 as pseudocone_pb2
-```
 
 #### 2. Regenerate `.protoset` File
 The `.protoset` file is needed to use `gRPCurl` and is generated using the `.proto` file.
 To generate:
 ```
-python -m grpc_tools.protoc -I. \
-    -I$GOPATH/src \
-    -I$GOPATH/src/github.com/googleapis/googleapis \
-    --proto_path=. \
-    --descriptor_set_out=pseudocone.protoset \
-    --include_imports \
-    pseudocone.proto
+make protoset
 ```
 
 ### Code style
 ```
-pycodestyle app
+make lint
 ```
 
 ## Building & Deployment

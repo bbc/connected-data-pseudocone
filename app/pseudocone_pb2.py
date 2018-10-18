@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='pseudocone.proto',
   package='pseudocone',
   syntax='proto3',
-  serialized_pb=_b('\n\x10pseudocone.proto\x12\npseudocone\"f\n\x0cTestDataUser\x12#\n\x04user\x18\x01 \x01(\x0b\x32\x15.pseudocone.UserParam\x12\x31\n\x0cinteractions\x18\x02 \x03(\x0b\x32\x1b.pseudocone.InteractionItem\"}\n\x0fInteractionItem\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\x15\n\ractivity_time\x18\x02 \x01(\t\x12\x15\n\ractivity_type\x18\x03 \x01(\t\x12\x12\n\ncompletion\x18\x04 \x01(\t\x12\x0b\n\x03pid\x18\x05 \x01(\t\x12\x0b\n\x03uri\x18\x06 \x01(\t\"\'\n\tUserParam\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06\x63ookie\x18\x02 \x01(\t\"\xd7\x02\n\x18ListTestDataUsersRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12$\n\x05users\x18\x03 \x03(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1e\n\x16start_interaction_time\x18\x05 \x01(\t\x12\x1c\n\x14test_period_duration\x18\x06 \x01(\t\x12/\n\rresource_type\x18\x07 \x03(\x0e\x32\x18.pseudocone.ResourceType\x12\x45\n\tb3_values\x18\x08 \x03(\x0b\x32\x32.pseudocone.ListTestDataUsersRequest.B3ValuesEntry\x1a/\n\rB3ValuesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xd3\x02\n\x17ListInteractionsRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12#\n\x04user\x18\x03 \x01(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1c\n\x14\x65nd_interaction_time\x18\x05 \x01(\t\x12\x1d\n\x15train_period_duration\x18\x06 \x01(\t\x12/\n\rresource_type\x18\x07 \x03(\x0e\x32\x18.pseudocone.ResourceType\x12\x44\n\tb3_values\x18\x08 \x03(\x0b\x32\x31.pseudocone.ListInteractionsRequest.B3ValuesEntry\x1a/\n\rB3ValuesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xef\x02\n$ListTestDataUsersBetweenDatesRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12$\n\x05users\x18\x03 \x03(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1e\n\x16start_interaction_time\x18\x05 \x01(\t\x12\x1c\n\x14\x65nd_interaction_time\x18\x06 \x01(\t\x12/\n\rresource_type\x18\x07 \x03(\x0e\x32\x18.pseudocone.ResourceType\x12Q\n\tb3_values\x18\x08 \x03(\x0b\x32>.pseudocone.ListTestDataUsersBetweenDatesRequest.B3ValuesEntry\x1a/\n\rB3ValuesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"D\n\x19ListTestDataUsersResponse\x12\'\n\x05items\x18\x01 \x03(\x0b\x32\x18.pseudocone.TestDataUser\"M\n\x18ListInteractionsResponse\x12\x31\n\x0cinteractions\x18\x01 \x03(\x0b\x32\x1b.pseudocone.InteractionItem\"P\n%ListTestDataUsersBetweenDatesResponse\x12\'\n\x05items\x18\x01 \x03(\x0b\x32\x18.pseudocone.TestDataUser\"\x07\n\x05\x45mpty*%\n\x0cResourceType\x12\x08\n\x04\x43LIP\x10\x00\x12\x0b\n\x07\x45PISODE\x10\x01\x32\x98\x03\n\x11PseudoconeService\x12\x62\n\x11ListTestDataUsers\x12$.pseudocone.ListTestDataUsersRequest\x1a%.pseudocone.ListTestDataUsersResponse\"\x00\x12_\n\x10ListInteractions\x12#.pseudocone.ListInteractionsRequest\x1a$.pseudocone.ListInteractionsResponse\"\x00\x12\x86\x01\n\x1dListTestDataUsersBetweenDates\x12\x30.pseudocone.ListTestDataUsersBetweenDatesRequest\x1a\x31.pseudocone.ListTestDataUsersBetweenDatesResponse\"\x00\x12\x35\n\x0bHealthCheck\x12\x11.pseudocone.Empty\x1a\x11.pseudocone.Empty\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x10pseudocone.proto\x12\npseudocone\"f\n\x0cTestDataUser\x12#\n\x04user\x18\x01 \x01(\x0b\x32\x15.pseudocone.UserParam\x12\x31\n\x0cinteractions\x18\x02 \x03(\x0b\x32\x1b.pseudocone.InteractionItem\"}\n\x0fInteractionItem\x12\x0e\n\x06\x61\x63tion\x18\x01 \x01(\t\x12\x15\n\ractivity_time\x18\x02 \x01(\t\x12\x15\n\ractivity_type\x18\x03 \x01(\t\x12\x12\n\ncompletion\x18\x04 \x01(\t\x12\x0b\n\x03pid\x18\x05 \x01(\t\x12\x0b\n\x03uri\x18\x06 \x01(\t\"`\n\x0cReactionItem\x12\x15\n\ractivity_time\x18\x01 \x01(\t\x12,\n\x08reaction\x18\x02 \x01(\x0e\x32\x1a.pseudocone.ReactionAction\x12\x0b\n\x03pid\x18\x03 \x01(\t\"\'\n\tUserParam\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06\x63ookie\x18\x02 \x01(\t\"\xd7\x02\n\x18ListTestDataUsersRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12$\n\x05users\x18\x03 \x03(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1e\n\x16start_interaction_time\x18\x05 \x01(\t\x12\x1c\n\x14test_period_duration\x18\x06 \x01(\t\x12/\n\rresource_type\x18\x07 \x03(\x0e\x32\x18.pseudocone.ResourceType\x12\x45\n\tb3_values\x18\x08 \x03(\x0b\x32\x32.pseudocone.ListTestDataUsersRequest.B3ValuesEntry\x1a/\n\rB3ValuesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xd3\x02\n\x17ListInteractionsRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12#\n\x04user\x18\x03 \x01(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1c\n\x14\x65nd_interaction_time\x18\x05 \x01(\t\x12\x1d\n\x15train_period_duration\x18\x06 \x01(\t\x12/\n\rresource_type\x18\x07 \x03(\x0e\x32\x18.pseudocone.ResourceType\x12\x44\n\tb3_values\x18\x08 \x03(\x0b\x32\x31.pseudocone.ListInteractionsRequest.B3ValuesEntry\x1a/\n\rB3ValuesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xef\x02\n$ListTestDataUsersBetweenDatesRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12$\n\x05users\x18\x03 \x03(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x04 \x01(\t\x12\x1e\n\x16start_interaction_time\x18\x05 \x01(\t\x12\x1c\n\x14\x65nd_interaction_time\x18\x06 \x01(\t\x12/\n\rresource_type\x18\x07 \x03(\x0e\x32\x18.pseudocone.ResourceType\x12Q\n\tb3_values\x18\x08 \x03(\x0b\x32>.pseudocone.ListTestDataUsersBetweenDatesRequest.B3ValuesEntry\x1a/\n\rB3ValuesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xfb\x02\n\x14ListReactionsRequest\x12\r\n\x05limit\x18\x01 \x01(\x05\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12,\n\x08reaction\x18\x03 \x01(\x0e\x32\x1a.pseudocone.ReactionAction\x12#\n\x04user\x18\x04 \x01(\x0b\x32\x15.pseudocone.UserParam\x12\x0f\n\x07\x64\x61taset\x18\x05 \x01(\t\x12\x1c\n\x14\x65nd_interaction_time\x18\x06 \x01(\t\x12\x1d\n\x15train_period_duration\x18\x07 \x01(\t\x12/\n\rresource_type\x18\x08 \x03(\x0e\x32\x18.pseudocone.ResourceType\x12\x41\n\tb3_values\x18\t \x03(\x0b\x32..pseudocone.ListReactionsRequest.B3ValuesEntry\x1a/\n\rB3ValuesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"D\n\x19ListTestDataUsersResponse\x12\'\n\x05items\x18\x01 \x03(\x0b\x32\x18.pseudocone.TestDataUser\"P\n%ListTestDataUsersBetweenDatesResponse\x12\'\n\x05items\x18\x01 \x03(\x0b\x32\x18.pseudocone.TestDataUser\"M\n\x18ListInteractionsResponse\x12\x31\n\x0cinteractions\x18\x01 \x03(\x0b\x32\x1b.pseudocone.InteractionItem\"@\n\x15ListReactionsResponse\x12\'\n\x05items\x18\x01 \x03(\x0b\x32\x18.pseudocone.ReactionItem\"\x07\n\x05\x45mpty*%\n\x0cResourceType\x12\x08\n\x04\x43LIP\x10\x00\x12\x0b\n\x07\x45PISODE\x10\x01*)\n\x0eReactionAction\x12\t\n\x05LIKED\x10\x00\x12\x0c\n\x08\x44ISLIKED\x10\x01*(\n\x0c\x41\x63tivityType\x12\t\n\x05PLAYS\x10\x00\x12\r\n\tREACTIONS\x10\x01\x32\xf0\x03\n\x11PseudoconeService\x12\x62\n\x11ListTestDataUsers\x12$.pseudocone.ListTestDataUsersRequest\x1a%.pseudocone.ListTestDataUsersResponse\"\x00\x12_\n\x10ListInteractions\x12#.pseudocone.ListInteractionsRequest\x1a$.pseudocone.ListInteractionsResponse\"\x00\x12\x86\x01\n\x1dListTestDataUsersBetweenDates\x12\x30.pseudocone.ListTestDataUsersBetweenDatesRequest\x1a\x31.pseudocone.ListTestDataUsersBetweenDatesResponse\"\x00\x12V\n\rListReactions\x12 .pseudocone.ListReactionsRequest\x1a!.pseudocone.ListReactionsResponse\"\x00\x12\x35\n\x0bHealthCheck\x12\x11.pseudocone.Empty\x1a\x11.pseudocone.Empty\"\x00\x62\x06proto3')
 )
 
 _RESOURCETYPE = _descriptor.EnumDescriptor(
@@ -40,14 +40,64 @@ _RESOURCETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1602,
-  serialized_end=1639,
+  serialized_start=2148,
+  serialized_end=2185,
 )
 _sym_db.RegisterEnumDescriptor(_RESOURCETYPE)
 
 ResourceType = enum_type_wrapper.EnumTypeWrapper(_RESOURCETYPE)
+_REACTIONACTION = _descriptor.EnumDescriptor(
+  name='ReactionAction',
+  full_name='pseudocone.ReactionAction',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='LIKED', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='DISLIKED', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=2187,
+  serialized_end=2228,
+)
+_sym_db.RegisterEnumDescriptor(_REACTIONACTION)
+
+ReactionAction = enum_type_wrapper.EnumTypeWrapper(_REACTIONACTION)
+_ACTIVITYTYPE = _descriptor.EnumDescriptor(
+  name='ActivityType',
+  full_name='pseudocone.ActivityType',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='PLAYS', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='REACTIONS', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=2230,
+  serialized_end=2270,
+)
+_sym_db.RegisterEnumDescriptor(_ACTIVITYTYPE)
+
+ActivityType = enum_type_wrapper.EnumTypeWrapper(_ACTIVITYTYPE)
 CLIP = 0
 EPISODE = 1
+LIKED = 0
+DISLIKED = 1
+PLAYS = 0
+REACTIONS = 1
 
 
 
@@ -155,6 +205,51 @@ _INTERACTIONITEM = _descriptor.Descriptor(
 )
 
 
+_REACTIONITEM = _descriptor.Descriptor(
+  name='ReactionItem',
+  full_name='pseudocone.ReactionItem',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='activity_time', full_name='pseudocone.ReactionItem.activity_time', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='reaction', full_name='pseudocone.ReactionItem.reaction', index=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='pid', full_name='pseudocone.ReactionItem.pid', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=263,
+  serialized_end=359,
+)
+
+
 _USERPARAM = _descriptor.Descriptor(
   name='UserParam',
   full_name='pseudocone.UserParam',
@@ -188,8 +283,8 @@ _USERPARAM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=263,
-  serialized_end=302,
+  serialized_start=361,
+  serialized_end=400,
 )
 
 
@@ -226,8 +321,8 @@ _LISTTESTDATAUSERSREQUEST_B3VALUESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=601,
-  serialized_end=648,
+  serialized_start=699,
+  serialized_end=746,
 )
 
 _LISTTESTDATAUSERSREQUEST = _descriptor.Descriptor(
@@ -305,8 +400,8 @@ _LISTTESTDATAUSERSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=305,
-  serialized_end=648,
+  serialized_start=403,
+  serialized_end=746,
 )
 
 
@@ -343,8 +438,8 @@ _LISTINTERACTIONSREQUEST_B3VALUESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=601,
-  serialized_end=648,
+  serialized_start=699,
+  serialized_end=746,
 )
 
 _LISTINTERACTIONSREQUEST = _descriptor.Descriptor(
@@ -422,8 +517,8 @@ _LISTINTERACTIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=651,
-  serialized_end=990,
+  serialized_start=749,
+  serialized_end=1088,
 )
 
 
@@ -460,8 +555,8 @@ _LISTTESTDATAUSERSBETWEENDATESREQUEST_B3VALUESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=601,
-  serialized_end=648,
+  serialized_start=699,
+  serialized_end=746,
 )
 
 _LISTTESTDATAUSERSBETWEENDATESREQUEST = _descriptor.Descriptor(
@@ -539,8 +634,132 @@ _LISTTESTDATAUSERSBETWEENDATESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=993,
-  serialized_end=1360,
+  serialized_start=1091,
+  serialized_end=1458,
+)
+
+
+_LISTREACTIONSREQUEST_B3VALUESENTRY = _descriptor.Descriptor(
+  name='B3ValuesEntry',
+  full_name='pseudocone.ListReactionsRequest.B3ValuesEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='pseudocone.ListReactionsRequest.B3ValuesEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='pseudocone.ListReactionsRequest.B3ValuesEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=699,
+  serialized_end=746,
+)
+
+_LISTREACTIONSREQUEST = _descriptor.Descriptor(
+  name='ListReactionsRequest',
+  full_name='pseudocone.ListReactionsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='limit', full_name='pseudocone.ListReactionsRequest.limit', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='offset', full_name='pseudocone.ListReactionsRequest.offset', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='reaction', full_name='pseudocone.ListReactionsRequest.reaction', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='user', full_name='pseudocone.ListReactionsRequest.user', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='dataset', full_name='pseudocone.ListReactionsRequest.dataset', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='end_interaction_time', full_name='pseudocone.ListReactionsRequest.end_interaction_time', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='train_period_duration', full_name='pseudocone.ListReactionsRequest.train_period_duration', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='resource_type', full_name='pseudocone.ListReactionsRequest.resource_type', index=7,
+      number=8, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='b3_values', full_name='pseudocone.ListReactionsRequest.b3_values', index=8,
+      number=9, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_LISTREACTIONSREQUEST_B3VALUESENTRY, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1461,
+  serialized_end=1840,
 )
 
 
@@ -570,39 +789,8 @@ _LISTTESTDATAUSERSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1362,
-  serialized_end=1430,
-)
-
-
-_LISTINTERACTIONSRESPONSE = _descriptor.Descriptor(
-  name='ListInteractionsResponse',
-  full_name='pseudocone.ListInteractionsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='interactions', full_name='pseudocone.ListInteractionsResponse.interactions', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1432,
-  serialized_end=1509,
+  serialized_start=1842,
+  serialized_end=1910,
 )
 
 
@@ -632,8 +820,70 @@ _LISTTESTDATAUSERSBETWEENDATESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1511,
-  serialized_end=1591,
+  serialized_start=1912,
+  serialized_end=1992,
+)
+
+
+_LISTINTERACTIONSRESPONSE = _descriptor.Descriptor(
+  name='ListInteractionsResponse',
+  full_name='pseudocone.ListInteractionsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='interactions', full_name='pseudocone.ListInteractionsResponse.interactions', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1994,
+  serialized_end=2071,
+)
+
+
+_LISTREACTIONSRESPONSE = _descriptor.Descriptor(
+  name='ListReactionsResponse',
+  full_name='pseudocone.ListReactionsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='items', full_name='pseudocone.ListReactionsResponse.items', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2073,
+  serialized_end=2137,
 )
 
 
@@ -656,12 +906,13 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1593,
-  serialized_end=1600,
+  serialized_start=2139,
+  serialized_end=2146,
 )
 
 _TESTDATAUSER.fields_by_name['user'].message_type = _USERPARAM
 _TESTDATAUSER.fields_by_name['interactions'].message_type = _INTERACTIONITEM
+_REACTIONITEM.fields_by_name['reaction'].enum_type = _REACTIONACTION
 _LISTTESTDATAUSERSREQUEST_B3VALUESENTRY.containing_type = _LISTTESTDATAUSERSREQUEST
 _LISTTESTDATAUSERSREQUEST.fields_by_name['users'].message_type = _USERPARAM
 _LISTTESTDATAUSERSREQUEST.fields_by_name['resource_type'].enum_type = _RESOURCETYPE
@@ -674,20 +925,31 @@ _LISTTESTDATAUSERSBETWEENDATESREQUEST_B3VALUESENTRY.containing_type = _LISTTESTD
 _LISTTESTDATAUSERSBETWEENDATESREQUEST.fields_by_name['users'].message_type = _USERPARAM
 _LISTTESTDATAUSERSBETWEENDATESREQUEST.fields_by_name['resource_type'].enum_type = _RESOURCETYPE
 _LISTTESTDATAUSERSBETWEENDATESREQUEST.fields_by_name['b3_values'].message_type = _LISTTESTDATAUSERSBETWEENDATESREQUEST_B3VALUESENTRY
+_LISTREACTIONSREQUEST_B3VALUESENTRY.containing_type = _LISTREACTIONSREQUEST
+_LISTREACTIONSREQUEST.fields_by_name['reaction'].enum_type = _REACTIONACTION
+_LISTREACTIONSREQUEST.fields_by_name['user'].message_type = _USERPARAM
+_LISTREACTIONSREQUEST.fields_by_name['resource_type'].enum_type = _RESOURCETYPE
+_LISTREACTIONSREQUEST.fields_by_name['b3_values'].message_type = _LISTREACTIONSREQUEST_B3VALUESENTRY
 _LISTTESTDATAUSERSRESPONSE.fields_by_name['items'].message_type = _TESTDATAUSER
-_LISTINTERACTIONSRESPONSE.fields_by_name['interactions'].message_type = _INTERACTIONITEM
 _LISTTESTDATAUSERSBETWEENDATESRESPONSE.fields_by_name['items'].message_type = _TESTDATAUSER
+_LISTINTERACTIONSRESPONSE.fields_by_name['interactions'].message_type = _INTERACTIONITEM
+_LISTREACTIONSRESPONSE.fields_by_name['items'].message_type = _REACTIONITEM
 DESCRIPTOR.message_types_by_name['TestDataUser'] = _TESTDATAUSER
 DESCRIPTOR.message_types_by_name['InteractionItem'] = _INTERACTIONITEM
+DESCRIPTOR.message_types_by_name['ReactionItem'] = _REACTIONITEM
 DESCRIPTOR.message_types_by_name['UserParam'] = _USERPARAM
 DESCRIPTOR.message_types_by_name['ListTestDataUsersRequest'] = _LISTTESTDATAUSERSREQUEST
 DESCRIPTOR.message_types_by_name['ListInteractionsRequest'] = _LISTINTERACTIONSREQUEST
 DESCRIPTOR.message_types_by_name['ListTestDataUsersBetweenDatesRequest'] = _LISTTESTDATAUSERSBETWEENDATESREQUEST
+DESCRIPTOR.message_types_by_name['ListReactionsRequest'] = _LISTREACTIONSREQUEST
 DESCRIPTOR.message_types_by_name['ListTestDataUsersResponse'] = _LISTTESTDATAUSERSRESPONSE
-DESCRIPTOR.message_types_by_name['ListInteractionsResponse'] = _LISTINTERACTIONSRESPONSE
 DESCRIPTOR.message_types_by_name['ListTestDataUsersBetweenDatesResponse'] = _LISTTESTDATAUSERSBETWEENDATESRESPONSE
+DESCRIPTOR.message_types_by_name['ListInteractionsResponse'] = _LISTINTERACTIONSRESPONSE
+DESCRIPTOR.message_types_by_name['ListReactionsResponse'] = _LISTREACTIONSRESPONSE
 DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
 DESCRIPTOR.enum_types_by_name['ResourceType'] = _RESOURCETYPE
+DESCRIPTOR.enum_types_by_name['ReactionAction'] = _REACTIONACTION
+DESCRIPTOR.enum_types_by_name['ActivityType'] = _ACTIVITYTYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 TestDataUser = _reflection.GeneratedProtocolMessageType('TestDataUser', (_message.Message,), dict(
@@ -703,6 +965,13 @@ InteractionItem = _reflection.GeneratedProtocolMessageType('InteractionItem', (_
   # @@protoc_insertion_point(class_scope:pseudocone.InteractionItem)
   ))
 _sym_db.RegisterMessage(InteractionItem)
+
+ReactionItem = _reflection.GeneratedProtocolMessageType('ReactionItem', (_message.Message,), dict(
+  DESCRIPTOR = _REACTIONITEM,
+  __module__ = 'pseudocone_pb2'
+  # @@protoc_insertion_point(class_scope:pseudocone.ReactionItem)
+  ))
+_sym_db.RegisterMessage(ReactionItem)
 
 UserParam = _reflection.GeneratedProtocolMessageType('UserParam', (_message.Message,), dict(
   DESCRIPTOR = _USERPARAM,
@@ -756,12 +1025,34 @@ ListTestDataUsersBetweenDatesRequest = _reflection.GeneratedProtocolMessageType(
 _sym_db.RegisterMessage(ListTestDataUsersBetweenDatesRequest)
 _sym_db.RegisterMessage(ListTestDataUsersBetweenDatesRequest.B3ValuesEntry)
 
+ListReactionsRequest = _reflection.GeneratedProtocolMessageType('ListReactionsRequest', (_message.Message,), dict(
+
+  B3ValuesEntry = _reflection.GeneratedProtocolMessageType('B3ValuesEntry', (_message.Message,), dict(
+    DESCRIPTOR = _LISTREACTIONSREQUEST_B3VALUESENTRY,
+    __module__ = 'pseudocone_pb2'
+    # @@protoc_insertion_point(class_scope:pseudocone.ListReactionsRequest.B3ValuesEntry)
+    ))
+  ,
+  DESCRIPTOR = _LISTREACTIONSREQUEST,
+  __module__ = 'pseudocone_pb2'
+  # @@protoc_insertion_point(class_scope:pseudocone.ListReactionsRequest)
+  ))
+_sym_db.RegisterMessage(ListReactionsRequest)
+_sym_db.RegisterMessage(ListReactionsRequest.B3ValuesEntry)
+
 ListTestDataUsersResponse = _reflection.GeneratedProtocolMessageType('ListTestDataUsersResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTTESTDATAUSERSRESPONSE,
   __module__ = 'pseudocone_pb2'
   # @@protoc_insertion_point(class_scope:pseudocone.ListTestDataUsersResponse)
   ))
 _sym_db.RegisterMessage(ListTestDataUsersResponse)
+
+ListTestDataUsersBetweenDatesResponse = _reflection.GeneratedProtocolMessageType('ListTestDataUsersBetweenDatesResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTTESTDATAUSERSBETWEENDATESRESPONSE,
+  __module__ = 'pseudocone_pb2'
+  # @@protoc_insertion_point(class_scope:pseudocone.ListTestDataUsersBetweenDatesResponse)
+  ))
+_sym_db.RegisterMessage(ListTestDataUsersBetweenDatesResponse)
 
 ListInteractionsResponse = _reflection.GeneratedProtocolMessageType('ListInteractionsResponse', (_message.Message,), dict(
   DESCRIPTOR = _LISTINTERACTIONSRESPONSE,
@@ -770,12 +1061,12 @@ ListInteractionsResponse = _reflection.GeneratedProtocolMessageType('ListInterac
   ))
 _sym_db.RegisterMessage(ListInteractionsResponse)
 
-ListTestDataUsersBetweenDatesResponse = _reflection.GeneratedProtocolMessageType('ListTestDataUsersBetweenDatesResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LISTTESTDATAUSERSBETWEENDATESRESPONSE,
+ListReactionsResponse = _reflection.GeneratedProtocolMessageType('ListReactionsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _LISTREACTIONSRESPONSE,
   __module__ = 'pseudocone_pb2'
-  # @@protoc_insertion_point(class_scope:pseudocone.ListTestDataUsersBetweenDatesResponse)
+  # @@protoc_insertion_point(class_scope:pseudocone.ListReactionsResponse)
   ))
-_sym_db.RegisterMessage(ListTestDataUsersBetweenDatesResponse)
+_sym_db.RegisterMessage(ListReactionsResponse)
 
 Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), dict(
   DESCRIPTOR = _EMPTY,
@@ -791,6 +1082,8 @@ _LISTINTERACTIONSREQUEST_B3VALUESENTRY.has_options = True
 _LISTINTERACTIONSREQUEST_B3VALUESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _LISTTESTDATAUSERSBETWEENDATESREQUEST_B3VALUESENTRY.has_options = True
 _LISTTESTDATAUSERSBETWEENDATESREQUEST_B3VALUESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+_LISTREACTIONSREQUEST_B3VALUESENTRY.has_options = True
+_LISTREACTIONSREQUEST_B3VALUESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 
 _PSEUDOCONESERVICE = _descriptor.ServiceDescriptor(
   name='PseudoconeService',
@@ -798,8 +1091,8 @@ _PSEUDOCONESERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=1642,
-  serialized_end=2050,
+  serialized_start=2273,
+  serialized_end=2769,
   methods=[
   _descriptor.MethodDescriptor(
     name='ListTestDataUsers',
@@ -829,9 +1122,18 @@ _PSEUDOCONESERVICE = _descriptor.ServiceDescriptor(
     options=None,
   ),
   _descriptor.MethodDescriptor(
+    name='ListReactions',
+    full_name='pseudocone.PseudoconeService.ListReactions',
+    index=3,
+    containing_service=None,
+    input_type=_LISTREACTIONSREQUEST,
+    output_type=_LISTREACTIONSRESPONSE,
+    options=None,
+  ),
+  _descriptor.MethodDescriptor(
     name='HealthCheck',
     full_name='pseudocone.PseudoconeService.HealthCheck',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_EMPTY,
     output_type=_EMPTY,

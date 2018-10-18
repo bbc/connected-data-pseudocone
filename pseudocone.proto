@@ -10,6 +10,16 @@ enum ResourceType {
     EPISODE = 1;
 }
 
+enum ReactionAction {
+    LIKED = 0; // Default for reactions
+    DISLIKED = 1;
+}
+
+enum ActivityType {
+    PLAYS = 0;
+    REACTIONS = 1;
+}
+
 message TestDataUser {
 
     UserParam user = 1;
@@ -35,6 +45,18 @@ message InteractionItem {
 
     // Media item URI
     string uri = 6;
+}
+
+// Single-user feedback data item about a single media item
+message ReactionItem {
+    // Time of user interaction (ISO 8601)
+    string activity_time = 1;
+
+    // Detailed type of reaction (e.g. 'liked', 'disliked')
+    ReactionAction reaction = 2;
+
+    // Media item PID
+    string pid = 3;
 }
 
 message UserParam {
@@ -105,9 +127,8 @@ message ListInteractionsRequest {
 
 }
 
-message ListTestDataUsersBetweenDatesRequest {
-
-     // Number of results to return
+message ListTestDataUsersBetweenDatesRequest{
+    // Number of results to return
     int32 limit = 1;
 
     // Offset of results to return
@@ -134,24 +155,55 @@ message ListTestDataUsersBetweenDatesRequest {
     map<string,string> b3_values = 8;
 }
 
+message ListReactionsRequest {
+
+    // Number of results to return
+    int32 limit = 1;
+
+    // Offset of results to return
+    int32 offset = 2;
+
+    // Type of reaction to filter
+    ReactionAction reaction = 3;
+
+    // User ID to collect interaction data from
+    UserParam user = 4;
+
+    // Name of dataset to request from in Pseudocone
+    string dataset = 5;
+
+    // Only fetch user interaction items older than this date-time
+    // Expected ISO 8601 format, e.g., '2018-04-30T14:05:26.318497'
+    string end_interaction_time = 6;
+
+    // Length of test period in ISO duration format e.g. P0Y0M14DT0H0M0S
+    string train_period_duration = 7;
+
+    // Resource type to be returned in response (e.g. 'clip', 'episode')
+    repeated ResourceType resource_type = 8;
+
+    // Map containing values for 'X-B3-TraceId', 'X-B3-ParentSpanId', 'X-B3-SpanId', 'X-B3-Sampled', and 'X-B3-Flags'
+    map<string, string> b3_values = 9;
+
+}
+
 
 // RESPONSES
 
 message ListTestDataUsersResponse {
-
     repeated TestDataUser items = 1;
-
-}
-
-message ListInteractionsResponse {
-
-    repeated InteractionItem interactions = 1;
-
 }
 
 message ListTestDataUsersBetweenDatesResponse {
-
     repeated TestDataUser items = 1;
+}
+
+message ListInteractionsResponse {
+    repeated InteractionItem interactions = 1;
+}
+
+message ListReactionsResponse {
+    repeated ReactionItem items = 1;
 }
 
 message Empty {}
@@ -169,6 +221,11 @@ service PseudoconeService {
 
     //
     rpc ListTestDataUsersBetweenDates(ListTestDataUsersBetweenDatesRequest) returns (ListTestDataUsersBetweenDatesResponse) {}
+
+    // List interaction items, each containing single-user interaction data from UAS about a single media item
+    //
+    // For a queried user ID and list of media item URIs, it returns a corresponding list of interaction items
+    rpc ListReactions(ListReactionsRequest) returns (ListReactionsResponse) {}
 
     // Health check
     rpc HealthCheck(Empty) returns (Empty) {}

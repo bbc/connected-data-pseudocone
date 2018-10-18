@@ -5,7 +5,7 @@ from gcloud import storage
 from google.auth.exceptions import DefaultCredentialsError
 from oauth2client.service_account import ServiceAccountCredentials
 from app.settings import DATA_DUMP_FILE_NAME, GOOGLE_APPLICATION_CREDENTIALS, \
-    SERVICE_NAME, PSEUDOCONE_GCS_BUCKET, GCP_PROJECT_NAME
+    SERVICE_NAME, PSEUDOCONE_GCS_BUCKET, PROJECT_NAME
 
 logger = logging.getLogger(SERVICE_NAME)
 
@@ -41,7 +41,7 @@ def get_gcp_bucket():
     try:
         credentials_dict = json.load(open(GOOGLE_APPLICATION_CREDENTIALS, 'r'))
         credentials = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict)
-        client = storage.Client(credentials=credentials, project=GCP_PROJECT_NAME)
+        client = storage.Client(credentials=credentials, project=PROJECT_NAME)
         bucket = client.get_bucket(PSEUDOCONE_GCS_BUCKET)
         return bucket
     except DefaultCredentialsError:

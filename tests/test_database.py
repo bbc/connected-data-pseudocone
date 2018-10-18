@@ -143,7 +143,7 @@ def test_filter_interactions_between_dates_incorrect_params(db_data):
 @pytest.mark.integration
 def test_load_data_from_gcp_file():
     client = DatabaseClient(table_name=DATA_DUMP_FILE_NAME)
-    assert len(client.table) == 100
+    assert len(client.table) == 1000
 
 
 @patch("app.services.database.gcp_bucket.read_table", return_value=None)
