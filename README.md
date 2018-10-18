@@ -23,10 +23,10 @@ pip3 install -r requirements.txt
 ```
 
 2. Set the environment variable
-To run locally, you will have to download the GCP credentials and set the $GOOGLE_APPLICATION_CREDENTIALS variable to the json file with the credentials. 
+To run locally, you will have to download the GCP credentials and set the $GOOGLE_APPLICATION_CREDENTIALS variable to the json file with the credentials. You can use the same key as for justicia.
 
 ```
-gcloud iam service-accounts keys create --iam-account=test-pseudocone@bbc-connected-data.iam.gserviceaccount.com key.json
+gcloud iam service-accounts keys create --iam-account=justicia@bbc-datalab.iam.gserviceaccount.com key.json
 export GOOGLE_APPLICATION_CREDENTIALS=key.json
 ```
 
