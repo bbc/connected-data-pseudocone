@@ -59,6 +59,15 @@ message ReactionItem {
     string pid = 3;
 }
 
+// Single-user feedback data item about a single media item
+message FeedbackItem {
+    // Time of user interaction (ISO 8601)
+    string activity_time = 1;
+
+    // Media item PID
+    string pid = 2;
+}
+
 message UserParam {
 
     // Either the 'id' is present or the 'cookie', but not both.
@@ -187,6 +196,35 @@ message ListReactionsRequest {
 
 }
 
+message ListFeedbacksRequest {
+
+    // Number of results to return
+    int32 limit = 1;
+
+    // Offset of results to return
+    int32 offset = 2;
+
+    // User ID to collect interaction data from
+    UserParam user = 4;
+
+    // Name of dataset to request from in Pseudocone
+    string dataset = 5;
+
+    // Only fetch user interaction items older than this date-time
+    // Expected ISO 8601 format, e.g., '2018-04-30T14:05:26.318497'
+    string end_interaction_time = 6;
+
+    // Length of test period in ISO duration format e.g. P0Y0M14DT0H0M0S
+    string train_period_duration = 7;
+
+    // Resource type to be returned in response (e.g. 'clip', 'episode')
+    repeated ResourceType resource_type = 8;
+
+    // Map containing values for 'X-B3-TraceId', 'X-B3-ParentSpanId', 'X-B3-SpanId', 'X-B3-Sampled', and 'X-B3-Flags'
+    map<string, string> b3_values = 9;
+
+}
+
 
 // RESPONSES
 
@@ -204,6 +242,10 @@ message ListInteractionsResponse {
 
 message ListReactionsResponse {
     repeated ReactionItem items = 1;
+}
+
+message ListFeedbacksResponse {
+    repeated FeedbackItem items = 1;
 }
 
 message Empty {}
@@ -226,6 +268,8 @@ service PseudoconeService {
     //
     // For a queried user ID and list of media item URIs, it returns a corresponding list of interaction items
     rpc ListReactions(ListReactionsRequest) returns (ListReactionsResponse) {}
+
+    rpc ListFeedbacks(ListFeedbacksRequest) returns (ListFeedbacksResponse) {}
 
     // Health check
     rpc HealthCheck(Empty) returns (Empty) {}

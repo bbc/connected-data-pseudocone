@@ -35,6 +35,11 @@ class PseudoconeServiceStub(object):
         request_serializer=pseudocone__pb2.ListReactionsRequest.SerializeToString,
         response_deserializer=pseudocone__pb2.ListReactionsResponse.FromString,
         )
+    self.ListFeedbacks = channel.unary_unary(
+        '/pseudocone.PseudoconeService/ListFeedbacks',
+        request_serializer=pseudocone__pb2.ListFeedbacksRequest.SerializeToString,
+        response_deserializer=pseudocone__pb2.ListFeedbacksResponse.FromString,
+        )
     self.HealthCheck = channel.unary_unary(
         '/pseudocone.PseudoconeService/HealthCheck',
         request_serializer=pseudocone__pb2.Empty.SerializeToString,
@@ -77,6 +82,13 @@ class PseudoconeServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def ListFeedbacks(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def HealthCheck(self, request, context):
     """Health check
     """
@@ -106,6 +118,11 @@ def add_PseudoconeServiceServicer_to_server(servicer, server):
           servicer.ListReactions,
           request_deserializer=pseudocone__pb2.ListReactionsRequest.FromString,
           response_serializer=pseudocone__pb2.ListReactionsResponse.SerializeToString,
+      ),
+      'ListFeedbacks': grpc.unary_unary_rpc_method_handler(
+          servicer.ListFeedbacks,
+          request_deserializer=pseudocone__pb2.ListFeedbacksRequest.FromString,
+          response_serializer=pseudocone__pb2.ListFeedbacksResponse.SerializeToString,
       ),
       'HealthCheck': grpc.unary_unary_rpc_method_handler(
           servicer.HealthCheck,
