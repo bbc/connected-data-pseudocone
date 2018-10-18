@@ -23,7 +23,7 @@ pip3 install -r requirements.txt
 ```
 
 2. Set the environment variable
-To run locally, you will have to download the GCP credentials and set the $GOOGLE_APPLICATION_CREDENTIALS variable to the json file with the credentials. You can use the same key as for justicia.
+To run locally, you will have to download the GCP credentials and set the $GOOGLE_APPLICATION_CREDENTIALS variable to the json file with the credentials. You can use the same key as for justicia. Service account permissions are general bucket access, not for individual buckets. The name justicia isn't very well chosen, and could be improved in the future... If you have already generated and downloaded the key once, please do not do it again, we have a limit of currently 10 keys per account.
 
 ```
 gcloud iam service-accounts keys create --iam-account=justicia@bbc-datalab.iam.gserviceaccount.com key.json
