@@ -3,6 +3,5 @@ gcloud==0.18.3
 google-api-python-client==1.6.5
 grpcio==1.10.0
 grpcio-tools==1.10.0
-requests==2.18.4
 isodate==0.6.0
 git+https://github.com/bbc/stackdriver_logging@v0.1.2
