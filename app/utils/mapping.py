@@ -77,7 +77,7 @@ def extract_latest_interaction(interactions):
 
 def extract_time(json):
 
-    return datetime.datetime.strptime(json['activitytime'], "%Y-%m-%dT%H:%M:%S.%fZ")
+    return isodate.parse_datetime(json['activitytime']).replace(tzinfo=None)
 
 
 def get_data_matching_property(data, property, value):

@@ -2,8 +2,6 @@ import isodate
 import json
 import logging
 
-from datetime import datetime
-
 from app.pseudocone_pb2 import ResourceType
 from app.services import gcp_bucket
 from app.settings import DATA_DUMP_FILE_NAME, SERVICE_NAME
@@ -76,7 +74,7 @@ class DatabaseClient:
 
         if iso_duration:
             if iso_start_date:
-                start_date_parsed = datetime.strptime(iso_start_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+                start_date_parsed = isodate.parse_datetime(iso_start_date).replace(tzinfo=None)
                 end_date_parsed = start_date_parsed + isodate.parse_duration(iso_duration)
                 start_filtered = self.filter_with_start_date(db_table, start_date_parsed)
                 start_end_filtered = self.filter_with_end_date(start_filtered, end_date_parsed)
@@ -84,7 +82,7 @@ class DatabaseClient:
 
                 return start_end_filtered
             else:
-                end_date_parsed = datetime.strptime(iso_end_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+                end_date_parsed = isodate.parse_datetime(iso_end_date).replace(tzinfo=None)
                 start_date_parsed = end_date_parsed - isodate.parse_duration(iso_duration)
                 start_filtered = self.filter_with_start_date(db_table, start_date_parsed)
                 start_end_filtered = self.filter_with_end_date(start_filtered, end_date_parsed)
@@ -93,12 +91,12 @@ class DatabaseClient:
                 return start_end_filtered
         else:
             if iso_start_date:
-                start_date_parsed = datetime.strptime(iso_start_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+                start_date_parsed = isodate.parse_datetime(iso_start_date).replace(tzinfo=None)
                 db_table = self.filter_with_start_date(db_table, start_date_parsed)
                 logger.info(f"Call returned {len(db_table)} items after filtering for start date.")
 
             if iso_end_date:
-                end_date_parsed = datetime.strptime(iso_end_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+                end_date_parsed = isodate.parse_datetime(iso_end_date).replace(tzinfo=None)
                 db_table = self.filter_with_end_date(db_table, end_date_parsed)
                 logger.info(f"Call returned {len(db_table)} items after filtering for end date.")
 
@@ -124,10 +122,10 @@ class DatabaseClient:
 
     def filter_with_start_date(self, data, start_date_parsed):
         filtered_data = [row for row in data if
-                         datetime.strptime(row["activitytime"], "%Y-%m-%dT%H:%M:%S.%fZ") > start_date_parsed]
+                         isodate.parse_datetime(row["activitytime"]).replace(tzinfo=None) > start_date_parsed]
         return filtered_data
 
     def filter_with_end_date(self, data, end_date_parsed):
         filtered_data = [row for row in data if
-                         datetime.strptime(row["activitytime"], "%Y-%m-%dT%H:%M:%S.%fZ") < end_date_parsed]
+                         isodate.parse_datetime(row["activitytime"]).replace(tzinfo=None) < end_date_parsed]
         return filtered_data
