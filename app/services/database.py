@@ -51,7 +51,7 @@ class DatabaseClient:
             inclusion_list = inclusion_list[:int(user_limit)]
             raw_inclusion_list = [user.id for user in inclusion_list]
 
-        data_with_inclusion_filtered = [row for row in db_table[:] if row["anon_id"] in raw_inclusion_list]
+        data_with_inclusion_filtered = [row for row in db_table if row["anon_id"] in raw_inclusion_list]
         logger.info(f"Call returned {len(data_with_inclusion_filtered)} items after filtering for inclusion list.")
 
         return data_with_inclusion_filtered
