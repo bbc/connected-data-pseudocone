@@ -13,7 +13,7 @@ REQUEST_TIMEOUT = 5
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", DEFAULT_LOG_LEVEL)
 GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-PROJECT_NAME = 'bbc-datalab'
-DATA_DUMP_FILE_NAME = os.getenv("DATA_DUMP_FILE_NAME", "anonymised_uas_extract_list.json")
+PROJECT_NAME = "bbc-datalab"
+DATA_DUMP_FILE_NAME = os.getenv("DATA_DUMP_FILE_NAME", "anonymised_logs/users_logs_sample.json")
 
-PSEUDOCONE_GCS_BUCKET = 'pseudocone_data_dump_v2'
+PSEUDOCONE_GCS_BUCKET = "pseudocone_data_dump_v2"

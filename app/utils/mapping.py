@@ -77,7 +77,7 @@ def extract_latest_interaction(interactions):
 
 def extract_time(json):
 
-    return isodate.parse_datetime(json['activitytime']).replace(tzinfo=None)
+    return isodate.parse_datetime(json["anon_activitytime"]).replace(tzinfo=None)
 
 
 def get_data_matching_property(data, property, value):
@@ -93,7 +93,7 @@ def get_unique_vals_for_property(interactions_data, property):
 def convert_db_object_to_interaction_item(obj):
 
     interaction_item = pseudocone_pb2.InteractionItem(action=obj["action"],
-                                                      activity_time=obj["activitytime"],
+                                                      activity_time=obj["anon_activitytime"],
                                                       activity_type=obj["activitytype"],
                                                       completion=action_context_to_iso8601_duration(
                                                                obj["actioncontext"]),

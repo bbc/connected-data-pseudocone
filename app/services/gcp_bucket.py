@@ -23,7 +23,7 @@ def read_table(file_name=None):
     """
 
     if not GOOGLE_APPLICATION_CREDENTIALS:
-        logger.warning("'GOOGLE_APPLICATION_CREDENTIALS' is not set. To read from GCP storage, this environement"
+        logger.warning("'GOOGLE_APPLICATION_CREDENTIALS' is not set. To read from GCP storage, this environment"
                        "variable needs to be specified. Will now try to read the file locally instead.")
         return None
 

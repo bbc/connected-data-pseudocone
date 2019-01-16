@@ -19,11 +19,11 @@ class DatabaseClient:
     def load_data(self, table_name=None):
         if not table_name:
             table_name = DATA_DUMP_FILE_NAME
-
         gcp_data = gcp_bucket.read_table(table_name)
         if gcp_data:
             return gcp_data
         else:
+            logger.info(f"Couldn't read from {table_name} from GCP bucket.")
             try:
                 items = []
                 logger.info(f"Loading data from local file {table_name}.")
@@ -33,7 +33,7 @@ class DatabaseClient:
                 logger.info(f"Call returned {len(items)} items after reading local file.")
                 return items
             except FileNotFoundError:
-                err_message = f"Could not read from local file {table_name}."
+                err_message = f"Could not read from local file {table_name}, neither from GCP."
                 logger.exception(err_message)
                 raise FileNotFoundError(err_message)
             except ValueError as e:
@@ -109,7 +109,7 @@ class DatabaseClient:
             db_table = self.table
 
         if len(db_table) > 0:
-            db_table = [item for item in db_table if item['resourcetype'] in permissable_resource_types]
+            db_table = [item for item in db_table if item["resourcetype"] in permissable_resource_types]
 
         return db_table
 
@@ -122,10 +122,10 @@ class DatabaseClient:
 
     def filter_with_start_date(self, data, start_date_parsed):
         filtered_data = [row for row in data if
-                         isodate.parse_datetime(row["activitytime"]).replace(tzinfo=None) > start_date_parsed]
+                         isodate.parse_datetime(row["anon_activitytime"]).replace(tzinfo=None) > start_date_parsed]
         return filtered_data
 
     def filter_with_end_date(self, data, end_date_parsed):
         filtered_data = [row for row in data if
-                         isodate.parse_datetime(row["activitytime"]).replace(tzinfo=None) < end_date_parsed]
+                         isodate.parse_datetime(row["anon_activitytime"]).replace(tzinfo=None) < end_date_parsed]
         return filtered_data
